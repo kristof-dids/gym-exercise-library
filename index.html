@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Exercise Library — Gym Reference</title>
+<meta name="description" content="A personal reference library of gym exercises by muscle group, with primary/secondary muscles and brief form cues.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23e8621a'/><text x='50' y='72' font-size='58' font-family='Georgia,serif' font-weight='900' text-anchor='middle' fill='white'>E</text></svg>">
+<style>
+  :root{
+    --bg:#101114;
+    --bg-elev:#17191d;
+    --bg-elev-2:#1f2126;
+    --border:#2a2d33;
+    --text:#eceef0;
+    --text-dim:#9a9ea6;
+    --text-faint:#6b6f77;
+    --accent:#e8621a;
+    --accent-dim:#3a2a1c;
+    --radius:14px;
+    --eq-bodyweight:#4a90d9;
+    --eq-dumbbell:#e8621a;
+    --eq-barbell:#c0392b;
+    --eq-machine:#8e5fc9;
+    --eq-cable:#16a085;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  a{color:inherit}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+
+  /* Top bar */
+  header.top{
+    position:sticky;top:0;z-index:20;
+    background:rgba(16,17,20,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    padding:12px 0;
+  }
+  .topbar-inner{display:flex;align-items:center;gap:10px}
+  .brand{
+    display:flex;align-items:center;gap:8px;
+    font-weight:800;font-size:15px;letter-spacing:0.2px;
+    white-space:nowrap;cursor:pointer;user-select:none;
+  }
+  .brand .mark{
+    width:26px;height:26px;border-radius:7px;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;
+    font-weight:900;color:#fff;font-size:16px;flex:none;
+  }
+  .search-box{
+    flex:1;position:relative;
+  }
+  .search-box input{
+    width:100%;
+    background:var(--bg-elev-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:10px;
+    padding:9px 12px 9px 34px;
+    font-size:14px;
+    outline:none;
+  }
+  .search-box input:focus{border-color:var(--accent)}
+  .search-box::before{
+    content:"⌕";
+    position:absolute;left:11px;top:50%;transform:translateY(-52%);
+    color:var(--text-faint);font-size:16px;
+  }
+  .back-btn{
+    background:var(--bg-elev-2);border:1px solid var(--border);color:var(--text);
+    border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;
+    cursor:pointer;white-space:nowrap;flex:none;
+  }
+  .back-btn:hover{border-color:var(--accent)}
+
+  /* chips */
+  .chip-row{
+    display:flex;gap:8px;overflow-x:auto;padding:12px 0 0;
+    -ms-overflow-style:none;scrollbar-width:none;
+  }
+  .chip-row::-webkit-scrollbar{display:none}
+  .chip{
+    flex:none;
+    background:var(--bg-elev-2);border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:600;
+    cursor:pointer;white-space:nowrap;
+    display:flex;align-items:center;gap:6px;
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip.active{
+    background:var(--accent-dim);border-color:var(--accent);color:#fff;
+  }
+
+  /* hero */
+  .hero{padding:34px 0 8px}
+  .hero h1{font-size:clamp(24px,4vw,34px);margin:0 0 6px;letter-spacing:-0.5px}
+  .hero p{color:var(--text-dim);margin:0;font-size:14.5px;line-height:1.5;max-width:560px}
+
+  /* group grid */
+  .group-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:12px;margin-top:22px;
+  }
+  .group-card{
+    background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 12px 14px;text-align:center;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .group-card:hover{border-color:var(--group-color,var(--accent));transform:translateY(-2px)}
+  .group-card svg{width:56px;height:auto}
+  .group-card .gname{font-weight:700;font-size:14px}
+  .group-card .gcount{font-size:12px;color:var(--text-faint)}
+
+  /* group detail header */
+  .group-header{
+    display:flex;align-items:center;gap:16px;padding:22px 0 6px;
+  }
+  .group-header svg{width:64px;height:auto;flex:none}
+  .group-header h2{margin:0 0 3px;font-size:24px}
+  .group-header .sub{color:var(--text-dim);font-size:13.5px;margin:0}
+
+  /* section label for search-all mode */
+  .section-label{
+    font-size:12px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-faint);
+    margin:26px 0 10px;font-weight:700;
+  }
+
+  /* exercise grid */
+  .ex-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:14px;margin-top:16px;
+  }
+  .ex-card{
+    background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px;display:flex;flex-direction:column;gap:10px;
+  }
+  .ex-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .ex-name{font-weight:700;font-size:15.5px;line-height:1.3}
+  .eq-badge{
+    flex:none;font-size:10.5px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;
+    padding:4px 8px;border-radius:6px;color:#fff;white-space:nowrap;
+  }
+  .muscle-row{display:flex;flex-wrap:wrap;gap:6px}
+  .pill{
+    font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;
+  }
+  .pill.primary{background:var(--accent-dim);color:#ffb37a;border:1px solid #5a3a22}
+  .pill.secondary{background:var(--bg-elev-2);color:var(--text-dim);border:1px solid var(--border)}
+  .cue{font-size:13px;line-height:1.5;color:var(--text-dim)}
+  .cue b{color:var(--text)}
+  .group-tag{
+    font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;
+  }
+
+  .empty{color:var(--text-faint);font-size:14px;padding:40px 0;text-align:center}
+
+  footer{
+    margin-top:50px;padding:20px 0;border-top:1px solid var(--border);
+    color:var(--text-faint);font-size:12px;text-align:center;
+  }
+
+  .part{fill:#3a3f47;stroke:#1c1e22;stroke-width:1.5}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap topbar-inner">
+    <div class="brand" id="brandHome">
+      <span class="mark">E</span><span>Exercise Library</span>
+    </div>
+    <div class="search-box">
+      <input id="searchInput" type="search" placeholder="Search exercises…" autocomplete="off">
+    </div>
+    <button class="back-btn" id="backBtn" style="display:none">← All groups</button>
+  </div>
+  <div class="wrap">
+    <div class="chip-row" id="chipRow"></div>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer>
+  Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.
+</footer>
+
+<script>
+/* ---------------------------------------------------------
+   DATA
+--------------------------------------------------------- */
+const GROUPS = [
+  {id:'chest',     name:'Chest',        view:'front', parts:['chest'],       color:'#e8621a', blurb:'Pressing & fly movements for the pectorals.'},
+  {id:'back',      name:'Back',         view:'back',  parts:['back'],        color:'#3e8fd0', blurb:'Pulling movements for lats, mid-back & the posterior chain.'},
+  {id:'shoulders', name:'Shoulders',    view:'front', parts:['shoulders'],   color:'#d4ad2c', blurb:'Presses and raises for front, side & rear delts.'},
+  {id:'biceps',    name:'Biceps',       view:'front', parts:['biceps'],      color:'#9b59b6', blurb:'Curling variations for the front of the upper arm.'},
+  {id:'triceps',   name:'Triceps',      view:'back',  parts:['triceps'],     color:'#1abc9c', blurb:'Extension & pressdown movements for the back of the arm.'},
+  {id:'abs',       name:'Abs & Core',   view:'front', parts:['abs'],         color:'#e67e22', blurb:'Flexion, rotation & anti-extension work for the midsection.'},
+  {id:'legs',      name:'Legs',         view:'front', parts:['quads'],       color:'#3498db', blurb:'Quad & hamstring dominant squats, presses & lunges.'},
+  {id:'glutes',    name:'Glutes',       view:'back',  parts:['glutes'],      color:'#c0392b', blurb:'Hip-extension focused movements for the glutes.'},
+  {id:'calves',    name:'Calves',       view:'front', parts:['calves'],      color:'#27ae60', blurb:'Raises for the gastrocnemius & soleus.'},
+  {id:'forearms',  name:'Forearms',     view:'front', parts:['forearms'],    color:'#8d99a6', blurb:'Grip & wrist work for the lower arm.'},
+];
+
+const EQUIPMENT = {
+  bodyweight:{label:'Bodyweight', color:'var(--eq-bodyweight)'},
+  dumbbell:  {label:'Dumbbell',   color:'var(--eq-dumbbell)'},
+  barbell:   {label:'Barbell',    color:'var(--eq-barbell)'},
+  machine:   {label:'Machine',    color:'var(--eq-machine)'},
+  cable:     {label:'Cable',      color:'var(--eq-cable)'},
+};
+
+const EXERCISES = [
+// CHEST
+{name:'Barbell Bench Press', group:'chest', equipment:'barbell', primary:'Chest', secondary:['Triceps','Shoulders'],
+  cue:'Grip slightly wider than shoulders, lower the bar to mid-chest with elbows around 45° from your torso, then press up without bouncing off your chest.'},
+{name:'Incline Dumbbell Press', group:'chest', equipment:'dumbbell', primary:'Upper Chest', secondary:['Shoulders','Triceps'],
+  cue:'Set the bench to 30–45°, press the dumbbells up and slightly inward, stopping the descent when your upper arms are roughly parallel to the floor.'},
+{name:'Dumbbell Flyes', group:'chest', equipment:'dumbbell', primary:'Chest', secondary:['Shoulders'],
+  cue:'Keep a slight, fixed bend in your elbows and lower the dumbbells in a wide arc until you feel a stretch across your chest, not your shoulders.'},
+{name:'Push-Up', group:'chest', equipment:'bodyweight', primary:'Chest', secondary:['Triceps','Shoulders','Core'],
+  cue:'Keep your body in a straight line from head to heels and lower until your chest is just above the floor, elbows at about 45°.'},
+{name:'Machine Chest Press', group:'chest', equipment:'machine', primary:'Chest', secondary:['Triceps'],
+  cue:'Set the seat so the handles line up with mid-chest, and press forward without locking your elbows out hard at the top.'},
+{name:'Pec Deck (Machine Fly)', group:'chest', equipment:'machine', primary:'Chest', secondary:['Shoulders'],
+  cue:'Keep a soft bend in your elbows and squeeze your chest to bring the pads together; don’t slam them at the peak.'},
+{name:'Cable Crossover', group:'chest', equipment:'cable', primary:'Chest', secondary:['Shoulders'],
+  cue:'Stand slightly forward of the pulleys with a slight forward lean, and cross the cables in front of your hips with a slow, controlled squeeze.'},
+{name:'Dips (Chest-Focused)', group:'chest', equipment:'bodyweight', primary:'Lower Chest', secondary:['Triceps','Shoulders'],
+  cue:'Lean your torso forward and let your elbows flare slightly to bias the chest; don’t drop past a 90° elbow bend if your shoulders complain.'},
+
+// BACK
+{name:'Pull-Up', group:'back', equipment:'bodyweight', primary:'Lats', secondary:['Biceps','Rear Delts','Core'],
+  cue:'Start from a dead hang, pull your chest toward the bar by driving your elbows down and back, and avoid kipping or swinging.'},
+{name:'Barbell Bent-Over Row', group:'back', equipment:'barbell', primary:'Mid-Back & Lats', secondary:['Biceps','Rear Delts'],
+  cue:'Hinge at the hips to about 45°, keep a flat back, and row the bar to your lower ribs without jerking with your lower back.'},
+{name:'Single-Arm Dumbbell Row', group:'back', equipment:'dumbbell', primary:'Lats', secondary:['Biceps','Rear Delts'],
+  cue:'Support yourself on a bench, keep your back flat, and pull the dumbbell to your hip while keeping your elbow close to your body.'},
+{name:'Lat Pulldown', group:'back', equipment:'machine', primary:'Lats', secondary:['Biceps'],
+  cue:'Pull the bar to your upper chest by driving your elbows down, keeping a slight backward lean — don’t yank with momentum.'},
+{name:'Seated Cable Row', group:'back', equipment:'cable', primary:'Mid-Back', secondary:['Lats','Biceps'],
+  cue:'Keep your torso upright and back flat, row to your abdomen, and let your shoulder blades fully protract on the stretch.'},
+{name:'T-Bar Row', group:'back', equipment:'machine', primary:'Mid-Back', secondary:['Lats','Biceps'],
+  cue:'Keep your chest up and back flat, and pull the handle to your sternum without rounding your lower back.'},
+{name:'Deadlift', group:'back', equipment:'barbell', primary:'Posterior Chain', secondary:['Glutes','Hamstrings','Forearms'],
+  cue:'Keep the bar close to your shins, brace your core, and drive through your heels while keeping your spine neutral throughout.'},
+{name:'Chest-Supported Machine Row', group:'back', equipment:'machine', primary:'Mid-Back', secondary:['Rear Delts','Biceps'],
+  cue:'Keep your chest pressed against the pad and pull the handles back while squeezing your shoulder blades together.'},
+
+// SHOULDERS
+{name:'Barbell Overhead Press', group:'shoulders', equipment:'barbell', primary:'Front & Side Delts', secondary:['Triceps'],
+  cue:'Brace your core, press the bar straight up while tucking your chin slightly to let it pass, and avoid arching your lower back.'},
+{name:'Dumbbell Shoulder Press', group:'shoulders', equipment:'dumbbell', primary:'Delts', secondary:['Triceps'],
+  cue:'Press the dumbbells up and slightly in until they nearly touch overhead, without flaring your elbows past shoulder height on the way down.'},
+{name:'Lateral Raise', group:'shoulders', equipment:'dumbbell', primary:'Side Delts', secondary:[],
+  cue:'Raise the dumbbells out to the sides with a soft elbow bend, lifting only to shoulder height and leading with your elbows, not your hands.'},
+{name:'Front Raise', group:'shoulders', equipment:'dumbbell', primary:'Front Delts', secondary:[],
+  cue:'Raise one or both dumbbells to eye level with control, avoiding momentum from swinging your hips.'},
+{name:'Rear Delt Fly', group:'shoulders', equipment:'dumbbell', primary:'Rear Delts', secondary:['Upper Back'],
+  cue:'Hinge forward with a flat back and raise the dumbbells out to the sides, squeezing your shoulder blades together at the top.'},
+{name:'Machine Shoulder Press', group:'shoulders', equipment:'machine', primary:'Delts', secondary:['Triceps'],
+  cue:'Set the seat so handles start at shoulder height and press straight up without shrugging your shoulders toward your ears.'},
+{name:'Cable Lateral Raise', group:'shoulders', equipment:'cable', primary:'Side Delts', secondary:[],
+  cue:'Stand side-on to the pulley and raise the handle out to shoulder height, keeping the movement slow on the way down.'},
+{name:'Face Pull', group:'shoulders', equipment:'cable', primary:'Rear Delts', secondary:['Upper Back','Rotator Cuff'],
+  cue:'Pull the rope toward your face leading with high elbows, rotating your hands back so your thumbs finish pointing behind you.'},
+
+// BICEPS
+{name:'Alternating Dumbbell Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps', secondary:['Forearms'],
+  cue:'Curl one arm at a time, keeping your elbow pinned to your side and rotating your palm up as you lift.'},
+{name:'Barbell Curl', group:'biceps', equipment:'barbell', primary:'Biceps', secondary:[],
+  cue:'Keep your elbows fixed at your sides and curl the bar up without swinging your torso or using your hips for momentum.'},
+{name:'Hammer Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps & Brachialis', secondary:['Forearms'],
+  cue:'Keep your palms facing each other throughout the curl to bring in the outer arm and forearm along with the biceps.'},
+{name:'Cable Curl', group:'biceps', equipment:'cable', primary:'Biceps', secondary:[],
+  cue:'Keep constant tension by not letting your elbows drift forward, and control the negative all the way down.'},
+{name:'Preacher Curl', group:'biceps', equipment:'machine', primary:'Biceps', secondary:[],
+  cue:'Rest your upper arms fully on the pad and avoid locking your elbows out completely at the bottom to keep tension on the muscle.'},
+{name:'Concentration Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps', secondary:[],
+  cue:'Brace your elbow against your inner thigh and curl with a slow, strict motion, squeezing hard at the top.'},
+
+// TRICEPS
+{name:'Cable Triceps Pushdown', group:'triceps', equipment:'cable', primary:'Triceps', secondary:[],
+  cue:'Keep your elbows pinned to your sides and extend your forearms down fully without letting your elbows flare out.'},
+{name:'Overhead Dumbbell Extension', group:'triceps', equipment:'dumbbell', primary:'Triceps (Long Head)', secondary:[],
+  cue:'Keep your elbows pointed forward and close to your head as you lower the dumbbell behind you, then extend fully.'},
+{name:'Lying Triceps Extension (Skull Crusher)', group:'triceps', equipment:'barbell', primary:'Triceps', secondary:[],
+  cue:'Lower the bar toward your forehead by bending only at the elbow, keeping your upper arms stationary and perpendicular to the floor.'},
+{name:'Close-Grip Bench Press', group:'triceps', equipment:'barbell', primary:'Triceps', secondary:['Chest'],
+  cue:'Grip just inside shoulder width and keep your elbows tucked close to your body as you press.'},
+{name:'Dips (Triceps-Focused)', group:'triceps', equipment:'bodyweight', primary:'Triceps', secondary:['Chest','Shoulders'],
+  cue:'Keep your torso upright and elbows tucked close to your sides to bias the triceps over the chest.'},
+{name:'Dumbbell Triceps Kickback', group:'triceps', equipment:'dumbbell', primary:'Triceps', secondary:[],
+  cue:'Keep your upper arm parallel to the floor and fixed in place, extending only from the elbow.'},
+
+// ABS & CORE
+{name:'Crunch', group:'abs', equipment:'bodyweight', primary:'Upper Abs', secondary:[],
+  cue:'Curl your shoulder blades off the floor using your abs, not your neck or hip flexors, keeping a small gap under your chin.'},
+{name:'Reverse Crunch', group:'abs', equipment:'bodyweight', primary:'Lower Abs', secondary:[],
+  cue:'Curl your hips off the floor toward your ribcage using your lower abs, keeping the movement slow and controlled.'},
+{name:'Plank', group:'abs', equipment:'bodyweight', primary:'Core', secondary:['Shoulders'],
+  cue:'Keep a straight line from head to heels, squeeze your glutes, and don’t let your hips sag or pike up.'},
+{name:'Hanging Leg Raise', group:'abs', equipment:'bodyweight', primary:'Lower Abs & Hip Flexors', secondary:[],
+  cue:'Avoid swinging — raise your legs using your abs, curling your pelvis slightly at the top rather than just lifting your legs.'},
+{name:'Russian Twist', group:'abs', equipment:'bodyweight', primary:'Obliques', secondary:[],
+  cue:'Keep your chest up and rotate from your torso, not just your arms, tapping the weight down lightly on each side.'},
+{name:'Cable Woodchopper', group:'abs', equipment:'cable', primary:'Obliques', secondary:['Core'],
+  cue:'Rotate through your torso while keeping your hips relatively stable, pulling the cable diagonally across your body.'},
+{name:'Ab Wheel Rollout', group:'abs', equipment:'bodyweight', primary:'Core', secondary:['Shoulders','Lats'],
+  cue:'Keep your hips tucked and back flat as you roll out, only going as far as you can control without your lower back sagging.'},
+{name:'Weighted Sit-Up', group:'abs', equipment:'dumbbell', primary:'Abs', secondary:['Hip Flexors'],
+  cue:'Hold the weight against your chest and sit up smoothly without yanking your neck forward.'},
+
+// LEGS (quads & hamstrings)
+{name:'Barbell Back Squat', group:'legs', equipment:'barbell', primary:'Quads', secondary:['Glutes','Hamstrings','Core'],
+  cue:'Keep your chest up and knees tracking over your toes, squatting until your hips are at or below knee level.'},
+{name:'Leg Press', group:'legs', equipment:'machine', primary:'Quads', secondary:['Glutes','Hamstrings'],
+  cue:'Keep your lower back flat against the pad and avoid locking your knees out hard at the top.'},
+{name:'Dumbbell Lunge', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Hamstrings'],
+  cue:'Step forward and lower until both knees are near 90°, keeping your front knee tracking over your ankle, not past your toes.'},
+{name:'Leg Extension', group:'legs', equipment:'machine', primary:'Quads', secondary:[],
+  cue:'Extend your legs fully but avoid slamming into the top position; control the weight back down slowly.'},
+{name:'Romanian Deadlift', group:'legs', equipment:'barbell', primary:'Hamstrings', secondary:['Glutes','Lower Back'],
+  cue:'Push your hips back with a slight knee bend and a flat back, lowering the weight until you feel a stretch in your hamstrings.'},
+{name:'Leg Curl (Lying/Seated)', group:'legs', equipment:'machine', primary:'Hamstrings', secondary:[],
+  cue:'Curl the pad toward your glutes with control, avoiding lifting your hips off the pad.'},
+{name:'Bulgarian Split Squat', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes'],
+  cue:'Rest your back foot on a bench behind you and lower straight down, keeping most of your weight on your front leg.'},
+{name:'Goblet Squat', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Core'],
+  cue:'Hold the dumbbell close to your chest and squat down between your knees, keeping your torso upright.'},
+{name:'Bodyweight Squat', group:'legs', equipment:'bodyweight', primary:'Quads', secondary:['Glutes'],
+  cue:'Sit your hips back and down while keeping your heels planted and chest up, going as low as your mobility allows.'},
+{name:'Walking Lunge', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Hamstrings'],
+  cue:'Take a controlled step forward and drop your back knee toward the floor without letting your front knee cave inward.'},
+
+// GLUTES
+{name:'Barbell Hip Thrust', group:'glutes', equipment:'barbell', primary:'Glutes', secondary:['Hamstrings'],
+  cue:'Drive through your heels and squeeze your glutes hard at the top, keeping your chin tucked and ribs down.'},
+{name:'Glute Bridge', group:'glutes', equipment:'bodyweight', primary:'Glutes', secondary:['Hamstrings'],
+  cue:'Push through your heels and squeeze your glutes at the top, avoiding overarching your lower back.'},
+{name:'Cable Glute Kickback', group:'glutes', equipment:'cable', primary:'Glutes', secondary:[],
+  cue:'Keep your standing leg slightly bent and kick back and up using your glute, not your lower back.'},
+{name:'Sumo Deadlift', group:'glutes', equipment:'barbell', primary:'Glutes', secondary:['Hamstrings','Quads'],
+  cue:'Take a wide stance with toes turned out, and drive your knees out in line with your toes as you stand up.'},
+{name:'Dumbbell Step-Up', group:'glutes', equipment:'dumbbell', primary:'Glutes', secondary:['Quads'],
+  cue:'Drive through the heel of your lead foot to stand up onto the box, avoiding pushing off with your back foot.'},
+
+// CALVES
+{name:'Standing Calf Raise', group:'calves', equipment:'machine', primary:'Calves (Gastrocnemius)', secondary:[],
+  cue:'Rise up onto your toes as high as possible and lower down until you feel a full stretch in your calf.'},
+{name:'Seated Calf Raise', group:'calves', equipment:'machine', primary:'Calves (Soleus)', secondary:[],
+  cue:'Keep your knees bent throughout and press through the balls of your feet with a full range of motion.'},
+{name:'Dumbbell Calf Raise', group:'calves', equipment:'dumbbell', primary:'Calves', secondary:[],
+  cue:'Stand on a raised edge for a deeper stretch and rise onto your toes with a slow, controlled tempo.'},
+
+// FOREARMS
+{name:'Dumbbell Wrist Curl', group:'forearms', equipment:'dumbbell', primary:'Forearm Flexors', secondary:[],
+  cue:'Rest your forearms on your thighs or a bench and curl only your wrists through a full range of motion.'},
+{name:'Reverse Barbell Curl', group:'forearms', equipment:'barbell', primary:'Forearm Extensors', secondary:['Biceps'],
+  cue:'Use an overhand grip and curl the bar up while keeping your wrists firm and elbows fixed at your sides.'},
+{name:'Farmer’s Carry', group:'forearms', equipment:'dumbbell', primary:'Forearms & Grip', secondary:['Core','Traps'],
+  cue:'Keep your shoulders back and core braced, and walk with a tall posture without letting the weights swing.'},
+];
+
+/* ---------------------------------------------------------
+   BODY DIAGRAM (simple silhouette, highlighted region)
+--------------------------------------------------------- */
+function bodySvg(view, parts, color){
+  const on = p => parts.includes(p);
+  const fill = p => on(p) ? color : null;
+  const style = p => `class="part"${on(p) ? ` style="fill:${color}"` : ''}`;
+
+  if(view === 'front'){
+    return `<svg viewBox="0 0 120 220" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="18" r="14" class="part"/>
+      <rect x="52" y="30" width="16" height="10" rx="3" class="part"/>
+      <ellipse cx="30" cy="46" rx="13" ry="10" ${style('shoulders')}/>
+      <ellipse cx="90" cy="46" rx="13" ry="10" ${style('shoulders')}/>
+      <rect x="12" y="44" width="17" height="36" rx="8" ${style('biceps')}/>
+      <rect x="91" y="44" width="17" height="36" rx="8" ${style('biceps')}/>
+      <rect x="10" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
+      <rect x="94" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
+      <rect x="36" y="40" width="48" height="32" rx="10" ${style('chest')}/>
+      <rect x="42" y="74" width="36" height="36" rx="8" ${style('abs')}/>
+      <rect x="40" y="110" width="40" height="18" rx="8" class="part"/>
+      <rect x="40" y="130" width="18" height="48" rx="8" ${style('quads')}/>
+      <rect x="62" y="130" width="18" height="48" rx="8" ${style('quads')}/>
+      <rect x="41" y="180" width="16" height="36" rx="7" ${style('calves')}/>
+      <rect x="63" y="180" width="16" height="36" rx="7" ${style('calves')}/>
+    </svg>`;
+  }
+  // back view
+  return `<svg viewBox="0 0 120 220" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="18" r="14" class="part"/>
+    <rect x="52" y="30" width="16" height="10" rx="3" class="part"/>
+    <ellipse cx="30" cy="46" rx="13" ry="10" ${style('shoulders')}/>
+    <ellipse cx="90" cy="46" rx="13" ry="10" ${style('shoulders')}/>
+    <rect x="12" y="44" width="17" height="36" rx="8" ${style('triceps')}/>
+    <rect x="91" y="44" width="17" height="36" rx="8" ${style('triceps')}/>
+    <rect x="10" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
+    <rect x="94" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
+    <rect x="36" y="40" width="48" height="66" rx="10" ${style('back')}/>
+    <rect x="40" y="110" width="40" height="22" rx="8" ${style('glutes')}/>
+    <rect x="40" y="134" width="18" height="44" rx="8" ${style('hamstrings')}/>
+    <rect x="62" y="134" width="18" height="44" rx="8" ${style('hamstrings')}/>
+    <rect x="41" y="180" width="16" height="36" rx="7" ${style('calves')}/>
+    <rect x="63" y="180" width="16" height="36" rx="7" ${style('calves')}/>
+  </svg>`;
+}
+
+/* ---------------------------------------------------------
+   STATE + RENDER
+--------------------------------------------------------- */
+const state = { groupId: null, search: '', equipment: 'all' };
+
+function groupById(id){ return GROUPS.find(g => g.id === id); }
+function exerciseCount(id){ return EXERCISES.filter(e => e.group === id).length; }
+
+function eqBadge(eq){
+  const meta = EQUIPMENT[eq];
+  return `<span class="eq-badge" style="background:${meta.color}">${meta.label}</span>`;
+}
+
+function exerciseCard(ex, showGroupTag){
+  const g = groupById(ex.group);
+  const secondary = ex.secondary.map(s => `<span class="pill secondary">${s}</span>`).join('');
+  return `<div class="ex-card">
+    <div class="ex-top">
+      <div>
+        ${showGroupTag ? `<div class="group-tag" style="color:${g.color}">${g.name}</div>` : ''}
+        <div class="ex-name">${ex.name}</div>
+      </div>
+      ${eqBadge(ex.equipment)}
+    </div>
+    <div class="muscle-row">
+      <span class="pill primary">${ex.primary}</span>
+      ${secondary}
+    </div>
+    <div class="cue">${ex.cue}</div>
+  </div>`;
+}
+
+function matchesFilters(ex){
+  if(state.equipment !== 'all' && ex.equipment !== state.equipment) return false;
+  if(state.search){
+    const q = state.search.toLowerCase();
+    const hay = (ex.name + ' ' + ex.primary + ' ' + ex.secondary.join(' ')).toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function renderChips(){
+  const chipRow = document.getElementById('chipRow');
+  let html = `<div class="chip ${state.equipment==='all'?'active':''}" data-eq="all">All equipment</div>`;
+  Object.keys(EQUIPMENT).forEach(key => {
+    const meta = EQUIPMENT[key];
+    html += `<div class="chip ${state.equipment===key?'active':''}" data-eq="${key}">
+      <span class="dot" style="background:${meta.color}"></span>${meta.label}
+    </div>`;
+  });
+  chipRow.innerHTML = html;
+  chipRow.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      state.equipment = chip.dataset.eq;
+      renderChips();
+      renderApp();
+    });
+  });
+}
+
+function renderApp(){
+  const app = document.getElementById('app');
+  const backBtn = document.getElementById('backBtn');
+  backBtn.style.display = state.groupId ? 'inline-block' : 'none';
+
+  // Global search (no group selected): flat filtered list across all groups
+  if(!state.groupId && state.search){
+    const results = EXERCISES.filter(matchesFilters);
+    app.innerHTML = `
+      <div class="section-label">${results.length} result${results.length===1?'':'s'} for "${state.search}"</div>
+      <div class="ex-grid">${results.map(e => exerciseCard(e, true)).join('') || ''}</div>
+      ${results.length===0 ? '<div class="empty">No exercises match. Try a different term or equipment filter.</div>' : ''}
+    `;
+    return;
+  }
+
+  // Home: group grid
+  if(!state.groupId){
+    app.innerHTML = `
+      <div class="hero">
+        <h1>Exercise Library</h1>
+        <p>Pick a muscle group for quick gym-floor reference: primary &amp; secondary muscles worked, plus a one-line form cue for each exercise.</p>
+      </div>
+      <div class="group-grid">
+        ${GROUPS.map(g => `
+          <div class="group-card" style="--group-color:${g.color}" data-group="${g.id}">
+            ${bodySvg(g.view, g.parts, g.color)}
+            <div class="gname">${g.name}</div>
+            <div class="gcount">${exerciseCount(g.id)} exercises</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    app.querySelectorAll('.group-card').forEach(card => {
+      card.addEventListener('click', () => {
+        state.groupId = card.dataset.group;
+        state.search = '';
+        document.getElementById('searchInput').value = '';
+        location.hash = state.groupId;
+        renderApp();
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    });
+    return;
+  }
+
+  // Group detail view
+  const g = groupById(state.groupId);
+  const list = EXERCISES.filter(e => e.group === g.id).filter(matchesFilters);
+  app.innerHTML = `
+    <div class="group-header">
+      ${bodySvg(g.view, g.parts, g.color)}
+      <div>
+        <h2 style="color:${g.color}">${g.name}</h2>
+        <p class="sub">${g.blurb}</p>
+      </div>
+    </div>
+    <div class="ex-grid">${list.map(e => exerciseCard(e, false)).join('')}</div>
+    ${list.length===0 ? '<div class="empty">No exercises match this filter/search.</div>' : ''}
+  `;
+}
+
+/* ---------------------------------------------------------
+   EVENTS
+--------------------------------------------------------- */
+document.getElementById('searchInput').addEventListener('input', e => {
+  state.search = e.target.value.trim();
+  renderApp();
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  state.groupId = null;
+  state.search = '';
+  document.getElementById('searchInput').value = '';
+  location.hash = '';
+  renderApp();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('brandHome').addEventListener('click', () => {
+  state.groupId = null;
+  state.search = '';
+  document.getElementById('searchInput').value = '';
+  location.hash = '';
+  renderApp();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+window.addEventListener('hashchange', () => {
+  const id = location.hash.replace('#','');
+  state.groupId = groupById(id) ? id : null;
+  renderApp();
+});
+
+/* init */
+(function init(){
+  const id = location.hash.replace('#','');
+  state.groupId = groupById(id) ? id : null;
+  renderChips();
+  renderApp();
+})();
+</script>
+</body>
+</html>
