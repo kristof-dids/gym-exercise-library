@@ -143,8 +143,15 @@
   }
   .ex-card{
     background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);
-    padding:16px;display:flex;flex-direction:column;gap:10px;
+    padding:16px;display:flex;flex-direction:row;gap:12px;
   }
+  .pictogram{
+    flex:none;width:84px;height:104px;
+    background:var(--bg-elev-2);border:1px solid var(--border);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pictogram svg{width:100%;height:100%;display:block}
+  .ex-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
   .ex-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .ex-name{font-weight:700;font-size:15.5px;line-height:1.3}
   .eq-badge{
@@ -224,153 +231,218 @@ const EQUIPMENT = {
 const EXERCISES = [
 // CHEST
 {name:'Barbell Bench Press', group:'chest', equipment:'barbell', primary:'Chest', secondary:['Triceps','Shoulders'],
-  cue:'Grip slightly wider than shoulders, lower the bar to mid-chest with elbows around 45° from your torso, then press up without bouncing off your chest.'},
+  cue:'Grip slightly wider than shoulders, lower the bar to mid-chest with elbows around 45° from your torso, then press up without bouncing off your chest.',
+  icon:{stance:'lyingBack', armL:'reachUp', armR:'reachUp', extraBench:true}},
 {name:'Incline Dumbbell Press', group:'chest', equipment:'dumbbell', primary:'Upper Chest', secondary:['Shoulders','Triceps'],
-  cue:'Set the bench to 30–45°, press the dumbbells up and slightly inward, stopping the descent when your upper arms are roughly parallel to the floor.'},
+  cue:'Set the bench to 30–45°, press the dumbbells up and slightly inward, stopping the descent when your upper arms are roughly parallel to the floor.',
+  icon:{stance:'lyingBack', armL:'reachUp', armR:'reachUp', extraBench:true}},
 {name:'Dumbbell Flyes', group:'chest', equipment:'dumbbell', primary:'Chest', secondary:['Shoulders'],
-  cue:'Keep a slight, fixed bend in your elbows and lower the dumbbells in a wide arc until you feel a stretch across your chest, not your shoulders.'},
+  cue:'Keep a slight, fixed bend in your elbows and lower the dumbbells in a wide arc until you feel a stretch across your chest, not your shoulders.',
+  icon:{stance:'lyingBack', armL:'lateral', armR:'lateral', extraBench:true}},
 {name:'Push-Up', group:'chest', equipment:'bodyweight', primary:'Chest', secondary:['Triceps','Shoulders','Core'],
-  cue:'Keep your body in a straight line from head to heels and lower until your chest is just above the floor, elbows at about 45°.'},
+  cue:'Keep your body in a straight line from head to heels and lower until your chest is just above the floor, elbows at about 45°.',
+  icon:{stance:'plank', armL:'pushup', armR:'pushup'}},
 {name:'Machine Chest Press', group:'chest', equipment:'machine', primary:'Chest', secondary:['Triceps'],
-  cue:'Set the seat so the handles line up with mid-chest, and press forward without locking your elbows out hard at the top.'},
+  cue:'Set the seat so the handles line up with mid-chest, and press forward without locking your elbows out hard at the top.',
+  icon:{stance:'seated', armL:'front', armR:'front'}},
 {name:'Pec Deck (Machine Fly)', group:'chest', equipment:'machine', primary:'Chest', secondary:['Shoulders'],
-  cue:'Keep a soft bend in your elbows and squeeze your chest to bring the pads together; don’t slam them at the peak.'},
+  cue:'Keep a soft bend in your elbows and squeeze your chest to bring the pads together; don’t slam them at the peak.',
+  icon:{stance:'seated', armL:'lateral', armR:'lateral'}},
 {name:'Cable Crossover', group:'chest', equipment:'cable', primary:'Chest', secondary:['Shoulders'],
-  cue:'Stand slightly forward of the pulleys with a slight forward lean, and cross the cables in front of your hips with a slow, controlled squeeze.'},
+  cue:'Stand slightly forward of the pulleys with a slight forward lean, and cross the cables in front of your hips with a slow, controlled squeeze.',
+  icon:{stance:'standing', armL:'across', armR:'across', cableTo:'high', cableJoint:'R', cableBoth:true}},
 {name:'Dips (Chest-Focused)', group:'chest', equipment:'bodyweight', primary:'Lower Chest', secondary:['Triceps','Shoulders'],
-  cue:'Lean your torso forward and let your elbows flare slightly to bias the chest; don’t drop past a 90° elbow bend if your shoulders complain.'},
+  cue:'Lean your torso forward and let your elbows flare slightly to bias the chest; don’t drop past a 90° elbow bend if your shoulders complain.',
+  icon:{stance:'dipSupport'}},
 
 // BACK
 {name:'Pull-Up', group:'back', equipment:'bodyweight', primary:'Lats', secondary:['Biceps','Rear Delts','Core'],
-  cue:'Start from a dead hang, pull your chest toward the bar by driving your elbows down and back, and avoid kipping or swinging.'},
+  cue:'Start from a dead hang, pull your chest toward the bar by driving your elbows down and back, and avoid kipping or swinging.',
+  icon:{stance:'hanging', armL:'gripHigh', armR:'gripHigh'}},
 {name:'Barbell Bent-Over Row', group:'back', equipment:'barbell', primary:'Mid-Back & Lats', secondary:['Biceps','Rear Delts'],
-  cue:'Hinge at the hips to about 45°, keep a flat back, and row the bar to your lower ribs without jerking with your lower back.'},
+  cue:'Hinge at the hips to about 45°, keep a flat back, and row the bar to your lower ribs without jerking with your lower back.',
+  icon:{stance:'hinge60', armL:'row', armR:'row'}},
 {name:'Single-Arm Dumbbell Row', group:'back', equipment:'dumbbell', primary:'Lats', secondary:['Biceps','Rear Delts'],
-  cue:'Support yourself on a bench, keep your back flat, and pull the dumbbell to your hip while keeping your elbow close to your body.'},
+  cue:'Support yourself on a bench, keep your back flat, and pull the dumbbell to your hip while keeping your elbow close to your body.',
+  icon:{stance:'hinge60', armL:'down', armR:'row', gearHands:['R']}},
 {name:'Lat Pulldown', group:'back', equipment:'machine', primary:'Lats', secondary:['Biceps'],
-  cue:'Pull the bar to your upper chest by driving your elbows down, keeping a slight backward lean — don’t yank with momentum.'},
+  cue:'Pull the bar to your upper chest by driving your elbows down, keeping a slight backward lean — don’t yank with momentum.',
+  icon:{stance:'seated', armL:'pulldown', armR:'pulldown', gearAt:'none'}},
 {name:'Seated Cable Row', group:'back', equipment:'cable', primary:'Mid-Back', secondary:['Lats','Biceps'],
-  cue:'Keep your torso upright and back flat, row to your abdomen, and let your shoulder blades fully protract on the stretch.'},
+  cue:'Keep your torso upright and back flat, row to your abdomen, and let your shoulder blades fully protract on the stretch.',
+  icon:{stance:'seated', armL:'row', armR:'row', cableTo:'mid', cableJoint:'mid'}},
 {name:'T-Bar Row', group:'back', equipment:'machine', primary:'Mid-Back', secondary:['Lats','Biceps'],
-  cue:'Keep your chest up and back flat, and pull the handle to your sternum without rounding your lower back.'},
+  cue:'Keep your chest up and back flat, and pull the handle to your sternum without rounding your lower back.',
+  icon:{stance:'hinge60', armL:'row', armR:'row'}},
 {name:'Deadlift', group:'back', equipment:'barbell', primary:'Posterior Chain', secondary:['Glutes','Hamstrings','Forearms'],
-  cue:'Keep the bar close to your shins, brace your core, and drive through your heels while keeping your spine neutral throughout.'},
+  cue:'Keep the bar close to your shins, brace your core, and drive through your heels while keeping your spine neutral throughout.',
+  icon:{stance:'hinge80', armL:'down', armR:'down'}},
 {name:'Chest-Supported Machine Row', group:'back', equipment:'machine', primary:'Mid-Back', secondary:['Rear Delts','Biceps'],
-  cue:'Keep your chest pressed against the pad and pull the handles back while squeezing your shoulder blades together.'},
+  cue:'Keep your chest pressed against the pad and pull the handles back while squeezing your shoulder blades together.',
+  icon:{stance:'hinge30', armL:'row', armR:'row'}},
 
 // SHOULDERS
 {name:'Barbell Overhead Press', group:'shoulders', equipment:'barbell', primary:'Front & Side Delts', secondary:['Triceps'],
-  cue:'Brace your core, press the bar straight up while tucking your chin slightly to let it pass, and avoid arching your lower back.'},
+  cue:'Brace your core, press the bar straight up while tucking your chin slightly to let it pass, and avoid arching your lower back.',
+  icon:{stance:'standing', armL:'overhead', armR:'overhead'}},
 {name:'Dumbbell Shoulder Press', group:'shoulders', equipment:'dumbbell', primary:'Delts', secondary:['Triceps'],
-  cue:'Press the dumbbells up and slightly in until they nearly touch overhead, without flaring your elbows past shoulder height on the way down.'},
+  cue:'Press the dumbbells up and slightly in until they nearly touch overhead, without flaring your elbows past shoulder height on the way down.',
+  icon:{stance:'standing', armL:'overhead', armR:'overhead'}},
 {name:'Lateral Raise', group:'shoulders', equipment:'dumbbell', primary:'Side Delts', secondary:[],
-  cue:'Raise the dumbbells out to the sides with a soft elbow bend, lifting only to shoulder height and leading with your elbows, not your hands.'},
+  cue:'Raise the dumbbells out to the sides with a soft elbow bend, lifting only to shoulder height and leading with your elbows, not your hands.',
+  icon:{stance:'standing', armL:'lateral', armR:'lateral'}},
 {name:'Front Raise', group:'shoulders', equipment:'dumbbell', primary:'Front Delts', secondary:[],
-  cue:'Raise one or both dumbbells to eye level with control, avoiding momentum from swinging your hips.'},
+  cue:'Raise one or both dumbbells to eye level with control, avoiding momentum from swinging your hips.',
+  icon:{stance:'standing', armL:'front', armR:'front'}},
 {name:'Rear Delt Fly', group:'shoulders', equipment:'dumbbell', primary:'Rear Delts', secondary:['Upper Back'],
-  cue:'Hinge forward with a flat back and raise the dumbbells out to the sides, squeezing your shoulder blades together at the top.'},
+  cue:'Hinge forward with a flat back and raise the dumbbells out to the sides, squeezing your shoulder blades together at the top.',
+  icon:{stance:'hinge60', armL:'lateral', armR:'lateral'}},
 {name:'Machine Shoulder Press', group:'shoulders', equipment:'machine', primary:'Delts', secondary:['Triceps'],
-  cue:'Set the seat so handles start at shoulder height and press straight up without shrugging your shoulders toward your ears.'},
+  cue:'Set the seat so handles start at shoulder height and press straight up without shrugging your shoulders toward your ears.',
+  icon:{stance:'seated', armL:'overhead', armR:'overhead'}},
 {name:'Cable Lateral Raise', group:'shoulders', equipment:'cable', primary:'Side Delts', secondary:[],
-  cue:'Stand side-on to the pulley and raise the handle out to shoulder height, keeping the movement slow on the way down.'},
+  cue:'Stand side-on to the pulley and raise the handle out to shoulder height, keeping the movement slow on the way down.',
+  icon:{stance:'standing', armL:'lateral', armR:'lateral', cableTo:'low', cableJoint:'R'}},
 {name:'Face Pull', group:'shoulders', equipment:'cable', primary:'Rear Delts', secondary:['Upper Back','Rotator Cuff'],
-  cue:'Pull the rope toward your face leading with high elbows, rotating your hands back so your thumbs finish pointing behind you.'},
+  cue:'Pull the rope toward your face leading with high elbows, rotating your hands back so your thumbs finish pointing behind you.',
+  icon:{stance:'standing', armL:'across', armR:'across', cableTo:'mid', cableJoint:'mid'}},
 
 // BICEPS
 {name:'Alternating Dumbbell Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps', secondary:['Forearms'],
-  cue:'Curl one arm at a time, keeping your elbow pinned to your side and rotating your palm up as you lift.'},
+  cue:'Curl one arm at a time, keeping your elbow pinned to your side and rotating your palm up as you lift.',
+  icon:{stance:'standing', armL:'down', armR:'curl'}},
 {name:'Barbell Curl', group:'biceps', equipment:'barbell', primary:'Biceps', secondary:[],
-  cue:'Keep your elbows fixed at your sides and curl the bar up without swinging your torso or using your hips for momentum.'},
+  cue:'Keep your elbows fixed at your sides and curl the bar up without swinging your torso or using your hips for momentum.',
+  icon:{stance:'standing', armL:'curl', armR:'curl'}},
 {name:'Hammer Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps & Brachialis', secondary:['Forearms'],
-  cue:'Keep your palms facing each other throughout the curl to bring in the outer arm and forearm along with the biceps.'},
+  cue:'Keep your palms facing each other throughout the curl to bring in the outer arm and forearm along with the biceps.',
+  icon:{stance:'standing', armL:'curl', armR:'curl'}},
 {name:'Cable Curl', group:'biceps', equipment:'cable', primary:'Biceps', secondary:[],
-  cue:'Keep constant tension by not letting your elbows drift forward, and control the negative all the way down.'},
+  cue:'Keep constant tension by not letting your elbows drift forward, and control the negative all the way down.',
+  icon:{stance:'standing', armL:'curl', armR:'curl', cableTo:'low', cableJoint:'mid'}},
 {name:'Preacher Curl', group:'biceps', equipment:'machine', primary:'Biceps', secondary:[],
-  cue:'Rest your upper arms fully on the pad and avoid locking your elbows out completely at the bottom to keep tension on the muscle.'},
+  cue:'Rest your upper arms fully on the pad and avoid locking your elbows out completely at the bottom to keep tension on the muscle.',
+  icon:{stance:'preacher', gearAt:'none'}},
 {name:'Concentration Curl', group:'biceps', equipment:'dumbbell', primary:'Biceps', secondary:[],
-  cue:'Brace your elbow against your inner thigh and curl with a slow, strict motion, squeezing hard at the top.'},
+  cue:'Brace your elbow against your inner thigh and curl with a slow, strict motion, squeezing hard at the top.',
+  icon:{stance:'seated', armL:'down', armR:'curl', gearHands:['R']}},
 
 // TRICEPS
 {name:'Cable Triceps Pushdown', group:'triceps', equipment:'cable', primary:'Triceps', secondary:[],
-  cue:'Keep your elbows pinned to your sides and extend your forearms down fully without letting your elbows flare out.'},
+  cue:'Keep your elbows pinned to your sides and extend your forearms down fully without letting your elbows flare out.',
+  icon:{stance:'standing', armL:'pushdown', armR:'pushdown', cableTo:'high', cableJoint:'mid'}},
 {name:'Overhead Dumbbell Extension', group:'triceps', equipment:'dumbbell', primary:'Triceps (Long Head)', secondary:[],
-  cue:'Keep your elbows pointed forward and close to your head as you lower the dumbbell behind you, then extend fully.'},
+  cue:'Keep your elbows pointed forward and close to your head as you lower the dumbbell behind you, then extend fully.',
+  icon:{stance:'standing', armL:'overheadExt', armR:'overheadExt', gearHands:['center']}},
 {name:'Lying Triceps Extension (Skull Crusher)', group:'triceps', equipment:'barbell', primary:'Triceps', secondary:[],
-  cue:'Lower the bar toward your forehead by bending only at the elbow, keeping your upper arms stationary and perpendicular to the floor.'},
+  cue:'Lower the bar toward your forehead by bending only at the elbow, keeping your upper arms stationary and perpendicular to the floor.',
+  icon:{stance:'lyingBack', armL:'overheadExt', armR:'overheadExt', extraBench:true}},
 {name:'Close-Grip Bench Press', group:'triceps', equipment:'barbell', primary:'Triceps', secondary:['Chest'],
-  cue:'Grip just inside shoulder width and keep your elbows tucked close to your body as you press.'},
+  cue:'Grip just inside shoulder width and keep your elbows tucked close to your body as you press.',
+  icon:{stance:'lyingBack', armL:'reachUp', armR:'reachUp', extraBench:true}},
 {name:'Dips (Triceps-Focused)', group:'triceps', equipment:'bodyweight', primary:'Triceps', secondary:['Chest','Shoulders'],
-  cue:'Keep your torso upright and elbows tucked close to your sides to bias the triceps over the chest.'},
+  cue:'Keep your torso upright and elbows tucked close to your sides to bias the triceps over the chest.',
+  icon:{stance:'dipSupport'}},
 {name:'Dumbbell Triceps Kickback', group:'triceps', equipment:'dumbbell', primary:'Triceps', secondary:[],
-  cue:'Keep your upper arm parallel to the floor and fixed in place, extending only from the elbow.'},
+  cue:'Keep your upper arm parallel to the floor and fixed in place, extending only from the elbow.',
+  icon:{stance:'hinge60', armL:'down', armR:'extendedBack', gearHands:['R']}},
 
 // ABS & CORE
 {name:'Crunch', group:'abs', equipment:'bodyweight', primary:'Upper Abs', secondary:[],
-  cue:'Curl your shoulder blades off the floor using your abs, not your neck or hip flexors, keeping a small gap under your chin.'},
+  cue:'Curl your shoulder blades off the floor using your abs, not your neck or hip flexors, keeping a small gap under your chin.',
+  icon:{stance:'lyingBack', armL:'behindHead', armR:'behindHead'}},
 {name:'Reverse Crunch', group:'abs', equipment:'bodyweight', primary:'Lower Abs', secondary:[],
-  cue:'Curl your hips off the floor toward your ribcage using your lower abs, keeping the movement slow and controlled.'},
+  cue:'Curl your hips off the floor toward your ribcage using your lower abs, keeping the movement slow and controlled.',
+  icon:{stance:'lyingBack', armL:'down', armR:'down'}},
 {name:'Plank', group:'abs', equipment:'bodyweight', primary:'Core', secondary:['Shoulders'],
-  cue:'Keep a straight line from head to heels, squeeze your glutes, and don’t let your hips sag or pike up.'},
+  cue:'Keep a straight line from head to heels, squeeze your glutes, and don’t let your hips sag or pike up.',
+  icon:{stance:'plank', armL:'plankSupport', armR:'plankSupport'}},
 {name:'Hanging Leg Raise', group:'abs', equipment:'bodyweight', primary:'Lower Abs & Hip Flexors', secondary:[],
-  cue:'Avoid swinging — raise your legs using your abs, curling your pelvis slightly at the top rather than just lifting your legs.'},
+  cue:'Avoid swinging — raise your legs using your abs, curling your pelvis slightly at the top rather than just lifting your legs.',
+  icon:{stance:'hangingRaised', armL:'gripHigh', armR:'gripHigh'}},
 {name:'Russian Twist', group:'abs', equipment:'bodyweight', primary:'Obliques', secondary:[],
-  cue:'Keep your chest up and rotate from your torso, not just your arms, tapping the weight down lightly on each side.'},
+  cue:'Keep your chest up and rotate from your torso, not just your arms, tapping the weight down lightly on each side.',
+  icon:{stance:'seatedTwist', armL:'across', armR:'across'}},
 {name:'Cable Woodchopper', group:'abs', equipment:'cable', primary:'Obliques', secondary:['Core'],
-  cue:'Rotate through your torso while keeping your hips relatively stable, pulling the cable diagonally across your body.'},
+  cue:'Rotate through your torso while keeping your hips relatively stable, pulling the cable diagonally across your body.',
+  icon:{stance:'standing', armL:'across', armR:'across', cableTo:'high', cableJoint:'R'}},
 {name:'Ab Wheel Rollout', group:'abs', equipment:'bodyweight', primary:'Core', secondary:['Shoulders','Lats'],
-  cue:'Keep your hips tucked and back flat as you roll out, only going as far as you can control without your lower back sagging.'},
+  cue:'Keep your hips tucked and back flat as you roll out, only going as far as you can control without your lower back sagging.',
+  icon:{stance:'kneeling', armL:'reachForward', armR:'reachForward'}},
 {name:'Weighted Sit-Up', group:'abs', equipment:'dumbbell', primary:'Abs', secondary:['Hip Flexors'],
-  cue:'Hold the weight against your chest and sit up smoothly without yanking your neck forward.'},
+  cue:'Hold the weight against your chest and sit up smoothly without yanking your neck forward.',
+  icon:{stance:'situp', gearHands:['center']}},
 
 // LEGS (quads & hamstrings)
 {name:'Barbell Back Squat', group:'legs', equipment:'barbell', primary:'Quads', secondary:['Glutes','Hamstrings','Core'],
-  cue:'Keep your chest up and knees tracking over your toes, squatting until your hips are at or below knee level.'},
+  cue:'Keep your chest up and knees tracking over your toes, squatting until your hips are at or below knee level.',
+  icon:{stance:'standing', armL:'down', armR:'down', gearAt:'shoulders'}},
 {name:'Leg Press', group:'legs', equipment:'machine', primary:'Quads', secondary:['Glutes','Hamstrings'],
-  cue:'Keep your lower back flat against the pad and avoid locking your knees out hard at the top.'},
+  cue:'Keep your lower back flat against the pad and avoid locking your knees out hard at the top.',
+  icon:{stance:'seatedRecline', armL:'down', armR:'down'}},
 {name:'Dumbbell Lunge', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Hamstrings'],
-  cue:'Step forward and lower until both knees are near 90°, keeping your front knee tracking over your ankle, not past your toes.'},
+  cue:'Step forward and lower until both knees are near 90°, keeping your front knee tracking over your ankle, not past your toes.',
+  icon:{stance:'split', armL:'down', armR:'down'}},
 {name:'Leg Extension', group:'legs', equipment:'machine', primary:'Quads', secondary:[],
-  cue:'Extend your legs fully but avoid slamming into the top position; control the weight back down slowly.'},
+  cue:'Extend your legs fully but avoid slamming into the top position; control the weight back down slowly.',
+  icon:{stance:'seated', armL:'down', armR:'down', gearAt:'knee-pad'}},
 {name:'Romanian Deadlift', group:'legs', equipment:'barbell', primary:'Hamstrings', secondary:['Glutes','Lower Back'],
-  cue:'Push your hips back with a slight knee bend and a flat back, lowering the weight until you feel a stretch in your hamstrings.'},
+  cue:'Push your hips back with a slight knee bend and a flat back, lowering the weight until you feel a stretch in your hamstrings.',
+  icon:{stance:'hinge30', armL:'down', armR:'down'}},
 {name:'Leg Curl (Lying/Seated)', group:'legs', equipment:'machine', primary:'Hamstrings', secondary:[],
-  cue:'Curl the pad toward your glutes with control, avoiding lifting your hips off the pad.'},
+  cue:'Curl the pad toward your glutes with control, avoiding lifting your hips off the pad.',
+  icon:{stance:'lyingProne', armL:'down', armR:'down', gearAt:'none'}},
 {name:'Bulgarian Split Squat', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes'],
-  cue:'Rest your back foot on a bench behind you and lower straight down, keeping most of your weight on your front leg.'},
+  cue:'Rest your back foot on a bench behind you and lower straight down, keeping most of your weight on your front leg.',
+  icon:{stance:'split', armL:'down', armR:'down'}},
 {name:'Goblet Squat', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Core'],
-  cue:'Hold the dumbbell close to your chest and squat down between your knees, keeping your torso upright.'},
+  cue:'Hold the dumbbell close to your chest and squat down between your knees, keeping your torso upright.',
+  icon:{stance:'standing', armL:'row', armR:'row', gearHands:['center']}},
 {name:'Bodyweight Squat', group:'legs', equipment:'bodyweight', primary:'Quads', secondary:['Glutes'],
-  cue:'Sit your hips back and down while keeping your heels planted and chest up, going as low as your mobility allows.'},
+  cue:'Sit your hips back and down while keeping your heels planted and chest up, going as low as your mobility allows.',
+  icon:{stance:'standing', armL:'front', armR:'front'}},
 {name:'Walking Lunge', group:'legs', equipment:'dumbbell', primary:'Quads', secondary:['Glutes','Hamstrings'],
-  cue:'Take a controlled step forward and drop your back knee toward the floor without letting your front knee cave inward.'},
+  cue:'Take a controlled step forward and drop your back knee toward the floor without letting your front knee cave inward.',
+  icon:{stance:'split', armL:'down', armR:'down'}},
 
 // GLUTES
 {name:'Barbell Hip Thrust', group:'glutes', equipment:'barbell', primary:'Glutes', secondary:['Hamstrings'],
-  cue:'Drive through your heels and squeeze your glutes hard at the top, keeping your chin tucked and ribs down.'},
+  cue:'Drive through your heels and squeeze your glutes hard at the top, keeping your chin tucked and ribs down.',
+  icon:{stance:'hipThrust', gearAt:'hips'}},
 {name:'Glute Bridge', group:'glutes', equipment:'bodyweight', primary:'Glutes', secondary:['Hamstrings'],
-  cue:'Push through your heels and squeeze your glutes at the top, avoiding overarching your lower back.'},
+  cue:'Push through your heels and squeeze your glutes at the top, avoiding overarching your lower back.',
+  icon:{stance:'hipThrust'}},
 {name:'Cable Glute Kickback', group:'glutes', equipment:'cable', primary:'Glutes', secondary:[],
-  cue:'Keep your standing leg slightly bent and kick back and up using your glute, not your lower back.'},
+  cue:'Keep your standing leg slightly bent and kick back and up using your glute, not your lower back.',
+  icon:{stance:'standingKickback', armL:'down', armR:'down', cableTo:'low', cableJoint:'ftR'}},
 {name:'Sumo Deadlift', group:'glutes', equipment:'barbell', primary:'Glutes', secondary:['Hamstrings','Quads'],
-  cue:'Take a wide stance with toes turned out, and drive your knees out in line with your toes as you stand up.'},
+  cue:'Take a wide stance with toes turned out, and drive your knees out in line with your toes as you stand up.',
+  icon:{stance:'hinge30', armL:'down', armR:'down'}},
 {name:'Dumbbell Step-Up', group:'glutes', equipment:'dumbbell', primary:'Glutes', secondary:['Quads'],
-  cue:'Drive through the heel of your lead foot to stand up onto the box, avoiding pushing off with your back foot.'},
+  cue:'Drive through the heel of your lead foot to stand up onto the box, avoiding pushing off with your back foot.',
+  icon:{stance:'step', armL:'down', armR:'down'}},
 
 // CALVES
 {name:'Standing Calf Raise', group:'calves', equipment:'machine', primary:'Calves (Gastrocnemius)', secondary:[],
-  cue:'Rise up onto your toes as high as possible and lower down until you feel a full stretch in your calf.'},
+  cue:'Rise up onto your toes as high as possible and lower down until you feel a full stretch in your calf.',
+  icon:{stance:'standing', armL:'down', armR:'down', gearAt:'shoulder-pads'}},
 {name:'Seated Calf Raise', group:'calves', equipment:'machine', primary:'Calves (Soleus)', secondary:[],
-  cue:'Keep your knees bent throughout and press through the balls of your feet with a full range of motion.'},
+  cue:'Keep your knees bent throughout and press through the balls of your feet with a full range of motion.',
+  icon:{stance:'seated', armL:'down', armR:'down', gearAt:'knee-pad'}},
 {name:'Dumbbell Calf Raise', group:'calves', equipment:'dumbbell', primary:'Calves', secondary:[],
-  cue:'Stand on a raised edge for a deeper stretch and rise onto your toes with a slow, controlled tempo.'},
+  cue:'Stand on a raised edge for a deeper stretch and rise onto your toes with a slow, controlled tempo.',
+  icon:{stance:'standing', armL:'down', armR:'down'}},
 
 // FOREARMS
 {name:'Dumbbell Wrist Curl', group:'forearms', equipment:'dumbbell', primary:'Forearm Flexors', secondary:[],
-  cue:'Rest your forearms on your thighs or a bench and curl only your wrists through a full range of motion.'},
+  cue:'Rest your forearms on your thighs or a bench and curl only your wrists through a full range of motion.',
+  icon:{stance:'seated', armL:'front', armR:'front'}},
 {name:'Reverse Barbell Curl', group:'forearms', equipment:'barbell', primary:'Forearm Extensors', secondary:['Biceps'],
-  cue:'Use an overhand grip and curl the bar up while keeping your wrists firm and elbows fixed at your sides.'},
+  cue:'Use an overhand grip and curl the bar up while keeping your wrists firm and elbows fixed at your sides.',
+  icon:{stance:'standing', armL:'curl', armR:'curl'}},
 {name:'Farmer’s Carry', group:'forearms', equipment:'dumbbell', primary:'Forearms & Grip', secondary:['Core','Traps'],
-  cue:'Keep your shoulders back and core braced, and walk with a tall posture without letting the weights swing.'},
+  cue:'Keep your shoulders back and core braced, and walk with a tall posture without letting the weights swing.',
+  icon:{stance:'standing', armL:'down', armR:'down'}},
 ];
 
 /* ---------------------------------------------------------
@@ -420,6 +492,227 @@ function bodySvg(view, parts, color){
 }
 
 /* ---------------------------------------------------------
+   EXERCISE PICTOGRAMS
+   Original line-art stick figures (not photos) showing stance,
+   posture and equipment placement. Built from a small library of
+   reusable "stances" (body position) + "arm presets" (limb angle),
+   composed per exercise.
+--------------------------------------------------------- */
+const RAD = d => d * Math.PI / 180;
+
+// Arm presets, defined as if for the RIGHT arm (theta measured in
+// standard math degrees: 0=right,90=up,180=left,270=down). Mirrored
+// automatically for the left arm.
+const ARM_PRESETS = {
+  down:         {theta1:270, bend:0},
+  curl:         {theta1:250, bend:130},
+  overhead:     {theta1:95,  bend:10},
+  lateral:      {theta1:5,   bend:5},
+  front:        {theta1:55,  bend:5},
+  row:          {theta1:255, bend:110},
+  reachUp:      {theta1:95,  bend:0},
+  across:       {theta1:330, bend:70},
+  gripHigh:     {theta1:100, bend:-60},
+  extendedBack: {theta1:200, bend:10},
+  overheadExt:  {theta1:95,  bend:-140},
+  pushdown:     {theta1:260, bend:-20},
+  behindHead:   {theta1:110, bend:-150},
+  plankSupport: {theta1:280, bend:95},
+  reachForward: {theta1:12,  bend:0},
+  holdChest:    {theta1:210, bend:110},
+  pulldown:     {theta1:95,  bend:-100},
+  pushup:       {theta1:250, bend:100},
+};
+
+function armPoint(shoulder, sideSign, presetName, len1, len2){
+  len1 = len1 || 17; len2 = len2 || 15;
+  const p = ARM_PRESETS[presetName] || ARM_PRESETS.down;
+  let theta1 = p.theta1, bend = p.bend;
+  if(sideSign < 0){ theta1 = 180 - theta1; bend = -bend; }
+  const elbow = [shoulder[0] + len1*Math.cos(RAD(theta1)), shoulder[1] - len1*Math.sin(RAD(theta1))];
+  const theta2 = theta1 + bend;
+  const hand = [elbow[0] + len2*Math.cos(RAD(theta2)), elbow[1] - len2*Math.sin(RAD(theta2))];
+  return {elbow, hand};
+}
+
+// Stances: hand-authored joint layouts on a 100x130 canvas.
+// A few stances fix their own arm joints directly (armOverrideL/R)
+// instead of using an arm preset (e.g. dip support, preacher pad).
+const STANCES = {
+  standing: {head:[50,14], neck:[50,25], pelvis:[50,64], shL:[40,28], shR:[60,28],
+    hpL:[44,64], hpR:[56,64], kneeL:[43,96], kneeR:[57,96], ftL:[41,120], ftR:[59,120]},
+  standingKickback: {head:[50,14], neck:[50,25], pelvis:[50,64], shL:[40,28], shR:[60,28],
+    hpL:[44,64], hpR:[56,64], kneeL:[43,96], kneeR:[66,86], ftL:[41,120], ftR:[80,92]},
+  hinge30: {head:[44,22], neck:[46,31], pelvis:[54,64], shL:[35,35], shR:[57,35],
+    hpL:[50,64], hpR:[60,64], kneeL:[48,96], kneeR:[60,96], ftL:[45,120], ftR:[60,120]},
+  hinge60: {head:[32,36], neck:[38,43], pelvis:[60,62], shL:[28,46], shR:[50,46],
+    hpL:[56,62], hpR:[66,62], kneeL:[53,94], kneeR:[65,94], ftL:[49,120], ftR:[63,120]},
+  hinge80: {head:[22,48], neck:[30,53], pelvis:[64,60], shL:[24,58], shR:[44,58],
+    hpL:[60,60], hpR:[70,60], kneeL:[57,92], kneeR:[68,92], ftL:[52,120], ftR:[64,120]},
+  seated: {head:[50,20], neck:[50,31], pelvis:[50,64], shL:[39,34], shR:[61,34],
+    hpL:[43,64], hpR:[57,64], kneeL:[40,66], kneeR:[60,66], ftL:[38,98], ftR:[62,98]},
+  seatedRecline: {head:[20,52], neck:[28,55], pelvis:[52,62], shL:[22,46], shR:[30,60],
+    hpL:[48,60], hpR:[56,64], kneeL:[66,44], kneeR:[70,50], ftL:[86,30], ftR:[90,36]},
+  lyingBack: {head:[14,58], neck:[24,58], pelvis:[62,58], shL:[24,48], shR:[24,68],
+    hpL:[58,50], hpR:[58,66], kneeL:[78,42], kneeR:[78,66], ftL:[92,52], ftR:[92,74]},
+  lyingProne: {head:[14,48], neck:[24,50], pelvis:[62,52], shL:[24,40], shR:[24,60],
+    hpL:[58,44], hpR:[58,60], kneeL:[80,40], kneeR:[80,62], ftL:[86,20], ftR:[86,66]},
+  plank: {head:[12,40], neck:[22,42], pelvis:[62,48], shL:[22,34], shR:[22,52],
+    hpL:[58,42], hpR:[58,54], kneeL:[80,48], kneeR:[80,56], ftL:[96,50], ftR:[96,58]},
+  hanging: {head:[50,24], neck:[50,34], pelvis:[50,76], shL:[40,38], shR:[60,38],
+    hpL:[46,76], hpR:[54,76], kneeL:[45,102], kneeR:[55,102], ftL:[44,122], ftR:[56,122]},
+  hangingRaised: {head:[50,24], neck:[50,34], pelvis:[50,76], shL:[40,38], shR:[60,38],
+    hpL:[46,76], hpR:[54,76], kneeL:[62,66], kneeR:[68,70], ftL:[76,58], ftR:[80,64]},
+  kneeling: {head:[50,20], neck:[50,31], pelvis:[50,62], shL:[39,34], shR:[61,34],
+    hpL:[44,62], hpR:[56,62], kneeL:[44,98], kneeR:[56,98], ftL:[44,112], ftR:[56,112]},
+  split: {head:[40,16], neck:[41,27], pelvis:[42,62], shL:[30,30], shR:[52,30],
+    hpL:[36,62], hpR:[48,62], kneeL:[30,92], kneeR:[62,84], ftL:[26,120], ftR:[78,100]},
+  step: {head:[44,14], neck:[45,25], pelvis:[48,60], shL:[34,28], shR:[56,28],
+    hpL:[42,60], hpR:[54,60], kneeL:[38,84], kneeR:[58,90], ftL:[34,100], ftR:[66,118]},
+  dipSupport: {head:[50,20], neck:[50,31], pelvis:[50,58], shL:[39,34], shR:[61,34],
+    hpL:[45,58], hpR:[55,58], kneeL:[48,86], kneeR:[54,90], ftL:[54,100], ftR:[62,100],
+    armOverrideL:{elbow:[34,46], hand:[30,58]}, armOverrideR:{elbow:[66,46], hand:[70,58]}},
+  preacher: {head:[46,18], neck:[47,28], pelvis:[54,60], shL:[36,32], shR:[58,32],
+    hpL:[50,60], hpR:[60,60], kneeL:[48,92], kneeR:[58,92], ftL:[45,118], ftR:[60,118],
+    armOverrideL:{elbow:[28,42], hand:[24,58]}, armOverrideR:{elbow:[58,32], hand:[63,20]}},
+  hipThrust: {head:[16,66], neck:[24,64], pelvis:[52,50], shL:[26,60], shR:[26,70],
+    hpL:[50,50], hpR:[58,52], kneeL:[70,62], kneeR:[72,70], ftL:[86,64], ftR:[88,74],
+    armOverrideL:{elbow:[26,44], hand:[26,32]}, armOverrideR:{elbow:[26,74], hand:[26,86]}},
+  situp: {head:[34,38], neck:[38,46], pelvis:[58,66], shL:[28,48], shR:[40,52],
+    hpL:[54,66], hpR:[64,66], kneeL:[52,66], kneeR:[64,66], ftL:[50,98], ftR:[66,98],
+    armOverrideL:{elbow:[32,44], hand:[36,46]}, armOverrideR:{elbow:[34,48], hand:[38,50]}},
+  seatedTwist: {head:[44,30], neck:[46,38], pelvis:[58,66], shL:[34,42], shR:[52,44],
+    hpL:[54,66], hpR:[64,66], kneeL:[50,64], kneeR:[64,64], ftL:[46,84], ftR:[64,84]},
+};
+
+// Fixed extras per stance (drawn from absolute coordinates matching
+// that stance's own geometry): pull-up bar, dip bars, step box, bench.
+const STANCE_EXTRAS = {
+  hanging:       [{type:'bar', x1:30, y1:20, x2:70, y2:20}],
+  hangingRaised: [{type:'bar', x1:30, y1:20, x2:70, y2:20}],
+  step:          [{type:'box', x:16, y:98, w:36, h:22}],
+  dipSupport:    [{type:'dipBar', x:30, y1:44, y2:70}, {type:'dipBar', x:70, y1:44, y2:70}],
+  hipThrust:     [{type:'bench', x:2, y:56, w:26, h:16}],
+};
+
+const BONES = [
+  ['neck','pelvis'], ['neck','shL'], ['shL','elbowL'], ['elbowL','handL'],
+  ['neck','shR'], ['shR','elbowR'], ['elbowR','handR'],
+  ['pelvis','hpL'], ['hpL','kneeL'], ['kneeL','ftL'],
+  ['pelvis','hpR'], ['hpR','kneeR'], ['kneeR','ftR'],
+];
+
+function buildJoints(spec){
+  const st = STANCES[spec.stance];
+  const joints = Object.assign({}, st);
+  if(st.armOverrideL){ joints.elbowL = st.armOverrideL.elbow; joints.handL = st.armOverrideL.hand; }
+  else { const r = armPoint(st.shL, -1, spec.armL || 'down'); joints.elbowL = r.elbow; joints.handL = r.hand; }
+  if(st.armOverrideR){ joints.elbowR = st.armOverrideR.elbow; joints.handR = st.armOverrideR.hand; }
+  else { const r = armPoint(st.shR, 1, spec.armR || 'down'); joints.elbowR = r.elbow; joints.handR = r.hand; }
+  return joints;
+}
+
+function renderStick(joints){
+  const color = '#8b93a1';
+  let s = `<circle cx="${joints.head[0]}" cy="${joints.head[1]}" r="7" fill="${color}"/>`;
+  BONES.forEach(([a,b]) => {
+    const p1 = joints[a], p2 = joints[b];
+    if(!p1 || !p2) return;
+    s += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="${color}" stroke-width="7" stroke-linecap="round"/>`;
+  });
+  return s;
+}
+
+function barAccessory(p1, p2, color){
+  return `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="${color}" stroke-width="4" stroke-linecap="round"/>`
+    + `<circle cx="${p1[0]}" cy="${p1[1]}" r="5" fill="${color}"/><circle cx="${p2[0]}" cy="${p2[1]}" r="5" fill="${color}"/>`;
+}
+function dumbbellAccessory(p, color){
+  return `<g transform="translate(${p[0]},${p[1]})">`
+    + `<rect x="-7" y="-2" width="14" height="4" rx="1" fill="${color}"/>`
+    + `<rect x="-9" y="-5" width="5" height="10" rx="1.5" fill="${color}"/>`
+    + `<rect x="4" y="-5" width="5" height="10" rx="1.5" fill="${color}"/></g>`;
+}
+function cableAccessory(from, to, color){
+  return `<line x1="${from[0]}" y1="${from[1]}" x2="${to[0]}" y2="${to[1]}" stroke="${color}" stroke-width="2" stroke-dasharray="3,2"/>`
+    + `<circle cx="${to[0]}" cy="${to[1]}" r="4" fill="${color}"/>`;
+}
+function rectAccessory(x, y, w, h, color, opacity){
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2.5" fill="${color}"${opacity ? ` opacity="${opacity}"` : ''}/>`;
+}
+
+const PULLEY = { high:[96,10], mid:[96,40], low:[96,124] };
+
+function renderGear(spec, joints){
+  const eq = spec.equipment;
+  if(!eq || eq === 'bodyweight') return '';
+  const color = `var(--eq-${eq})`;
+
+  if(eq === 'barbell'){
+    if(spec.gearAt === 'shoulders') return barAccessory(joints.shL, joints.shR, color);
+    if(spec.gearAt === 'hips'){ const c = joints.pelvis; return barAccessory([c[0]-14,c[1]], [c[0]+14,c[1]], color); }
+    return barAccessory(joints.handL, joints.handR, color);
+  }
+  if(eq === 'dumbbell'){
+    const hands = spec.gearHands || ['L','R'];
+    if(hands.includes('center')){
+      const mid = [(joints.handL[0]+joints.handR[0])/2, (joints.handL[1]+joints.handR[1])/2];
+      return dumbbellAccessory(mid, color);
+    }
+    let s = '';
+    if(hands.includes('L')) s += dumbbellAccessory(joints.handL, color);
+    if(hands.includes('R')) s += dumbbellAccessory(joints.handR, color);
+    return s;
+  }
+  if(eq === 'cable'){
+    const to = PULLEY[spec.cableTo || 'high'];
+    let from;
+    if(spec.cableJoint === 'mid') from = [(joints.handL[0]+joints.handR[0])/2, (joints.handL[1]+joints.handR[1])/2];
+    else if(spec.cableJoint === 'ftR') from = joints.ftR;
+    else if(spec.cableJoint === 'L') from = joints.handL;
+    else from = joints.handR;
+    let s = cableAccessory(from, to, color);
+    if(spec.cableBoth) s += cableAccessory(joints.handL, PULLEY[spec.cableToL || 'high'].map((v,i)=> i===0?4:v), color);
+    return s;
+  }
+  if(eq === 'machine'){
+    if(spec.gearAt === 'none') return '';
+    if(spec.gearAt === 'shoulder-pads') return rectAccessory(joints.shL[0]-6, joints.shL[1]-15, 12, 9, color) + rectAccessory(joints.shR[0]-6, joints.shR[1]-15, 12, 9, color);
+    if(spec.gearAt === 'knee-pad') return rectAccessory(joints.kneeL[0]-5, joints.kneeL[1]-3, 30, 8, color);
+    const seatW = 30;
+    return rectAccessory(joints.pelvis[0]-seatW/2, joints.pelvis[1]-2, seatW, 9, color)
+      + rectAccessory(joints.neck[0]-4, Math.min(joints.neck[1],joints.pelvis[1])-2, 8, Math.abs(joints.pelvis[1]-joints.neck[1]), color, 0.3);
+  }
+  return '';
+}
+
+function renderExtras(spec, joints){
+  let s = '';
+  (STANCE_EXTRAS[spec.stance] || []).forEach(item => {
+    if(item.type === 'bar') s += `<line x1="${item.x1}" y1="${item.y1}" x2="${item.x2}" y2="${item.y2}" stroke="#5a6270" stroke-width="4" stroke-linecap="round"/>`;
+    if(item.type === 'box') s += rectAccessory(item.x, item.y, item.w, item.h, '#2a2d33');
+    if(item.type === 'bench') s += rectAccessory(item.x, item.y, item.w, item.h, '#2a2d33');
+    if(item.type === 'dipBar') s += `<line x1="${item.x}" y1="${item.y1}" x2="${item.x}" y2="${item.y2}" stroke="#5a6270" stroke-width="4" stroke-linecap="round"/>`;
+  });
+  if(spec.extraBench){
+    const y = joints.neck[1];
+    const x1 = Math.min(joints.head[0], joints.pelvis[0]) - 6;
+    const x2 = Math.max(joints.kneeL[0], joints.kneeR[0]) + 4;
+    s += rectAccessory(x1, y-9, x2-x1, 18, '#2a2d33');
+  }
+  return s;
+}
+
+function exerciseIcon(spec){
+  if(!spec || !STANCES[spec.stance]) return '';
+  const joints = buildJoints(spec);
+  const extras = renderExtras(spec, joints);
+  const stick = renderStick(joints);
+  const gear = renderGear(spec, joints);
+  return `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">${extras}${stick}${gear}</svg>`;
+}
+
+/* ---------------------------------------------------------
    STATE + RENDER
 --------------------------------------------------------- */
 const state = { groupId: null, search: '', equipment: 'all' };
@@ -435,19 +728,23 @@ function eqBadge(eq){
 function exerciseCard(ex, showGroupTag){
   const g = groupById(ex.group);
   const secondary = ex.secondary.map(s => `<span class="pill secondary">${s}</span>`).join('');
+  const iconSpec = Object.assign({equipment: ex.equipment}, ex.icon || {});
   return `<div class="ex-card">
-    <div class="ex-top">
-      <div>
-        ${showGroupTag ? `<div class="group-tag" style="color:${g.color}">${g.name}</div>` : ''}
-        <div class="ex-name">${ex.name}</div>
+    <div class="pictogram">${exerciseIcon(iconSpec)}</div>
+    <div class="ex-body">
+      <div class="ex-top">
+        <div>
+          ${showGroupTag ? `<div class="group-tag" style="color:${g.color}">${g.name}</div>` : ''}
+          <div class="ex-name">${ex.name}</div>
+        </div>
+        ${eqBadge(ex.equipment)}
       </div>
-      ${eqBadge(ex.equipment)}
+      <div class="muscle-row">
+        <span class="pill primary">${ex.primary}</span>
+        ${secondary}
+      </div>
+      <div class="cue">${ex.cue}</div>
     </div>
-    <div class="muscle-row">
-      <span class="pill primary">${ex.primary}</span>
-      ${secondary}
-    </div>
-    <div class="cue">${ex.cue}</div>
   </div>`;
 }
 
