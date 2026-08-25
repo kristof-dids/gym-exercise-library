@@ -186,6 +186,11 @@
   .pill.secondary{background:var(--bg-elev-2);color:var(--text-dim);border:1px solid var(--border)}
   .cue{font-size:13px;line-height:1.5;color:var(--text-dim)}
   .cue b{color:var(--text)}
+  .video-link{
+    align-self:flex-start;font-size:12px;font-weight:700;color:var(--accent);
+    text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+  }
+  .video-link:hover{text-decoration:underline}
   .group-tag{
     font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;
   }
@@ -385,6 +390,85 @@ const PHOTOS = {
   'Finger Curls': 'Finger_Curls.jpg',
 };
 
+// YouTube video IDs, matched by exercise name via the YouTube Data
+// API (verified duration + relevance, not fabricated). Batch 1 of 2
+// (Chest/Back/Shoulders/Biceps/Triceps/Abs) — Legs/Glutes/Calves/
+// Forearms to follow once daily quota resets.
+const VIDEOS = {
+  'Barbell Bench Press': 'hWbUlkb5Ms4',
+  'Incline Dumbbell Press': 'IP4oeKh1Sd4',
+  'Dumbbell Flyes': 'QENKPHhQVi4',
+  'Push-Up': 'I9fsqKE5XHo',
+  'Machine Chest Press': 'xUm0BiZCWlQ',
+  'Pec Deck (Machine Fly)': '3jYo5cMU3d4',
+  'Cable Crossover': 'taI4XduLpTk',
+  'Dips (Chest-Focused)': 'yN6Q1UI_xkE',
+  'Incline Barbell Press': 'SrqOu55lrYU',
+  'Decline Bench Press': 'Pf1nDoqx_1A',
+  'Decline Push-Up': '5QFjmotLfW4',
+  'Incline Cable Fly': 'LGDCjwO-hFg',
+  'Machine Incline Press': 'VesHgJR14E8',
+  'Pull-Up': 'OEXosPwzFdc',
+  'Barbell Bent-Over Row': 'UL8ZcK64KxA',
+  'Single-Arm Dumbbell Row': 'dFzUjzfih7k',
+  'Lat Pulldown': 'SALxEARiMkw',
+  'Seated Cable Row': 'vwHG9Jfu4sw',
+  'T-Bar Row': 'TyLoy3n_a10',
+  'Deadlift': 'ZaTM37cfiDs',
+  'Leverage High Row': 'nhWPIm0tcTI',
+  'Wide-Grip Pull-Up': 'bHC16skSN6Q',
+  'Barbell Shrug': '0Jmi-byV8ns',
+  'Cable Straight-Arm Pulldown': '32auHIqgEoM',
+  'Barbell Pendlay Row': 'I1e9KgFk7fw',
+  'Reverse-Grip Lat Pulldown': 'bcVzEYmu7YA',
+  'Barbell Overhead Press': 'KP1sYz2VICk',
+  'Dumbbell Shoulder Press': '0JfYxMRsUCQ',
+  'Lateral Raise': 'pgrWjBfaFe8',
+  'Front Raise': 'H6RPefFMfjg',
+  'Machine Shoulder Press': '3R14MnZbcpw',
+  'Cable Lateral Raise': 'f_OGBg2KxgY',
+  'Face Pull': 'ljgqer1ZpXg',
+  'Arnold Press': '6Z15_WdXmVw',
+  'Barbell Upright Row': 'amCU-ziHITM',
+  'Alternating Deltoid Raise': 'OtoLOqToiaE',
+  'Cable Front Raise': 'NdQE5Fhfqn4',
+  'Reverse Pec Deck (Rear Delt Machine Fly)': 'dC7jhEk-29A',
+  'Alternating Dumbbell Curl': 'jcA6wqA2Qso',
+  'Barbell Curl': 'QZEqB6wUPxQ',
+  'Hammer Curl': 'BRVDS6HVR9Q',
+  'Cable Curl': '2MUEL4nL6hA',
+  'Preacher Curl': 'd_qzG4GMe0M',
+  'Concentration Curl': 'cHxRJdSVIkA',
+  'Incline Dumbbell Curl': 'DCe8f6vMe9A',
+  'Spider Curl': 'CITtSuda0Fg',
+  'Cable Rope Hammer Curl': 'VY4walmoM-I',
+  'Zottman Curl': 'D7bMA4WEKMI',
+  'EZ-Bar Curl': 'd2r5TCqnR4Y',
+  'Cable Triceps Pushdown': '-zLyUAo1gMw',
+  'Decline Dumbbell Triceps Extension': 'WOW6zPhqKKI',
+  'Close-Grip Bench Press': 'vEUyEOVn3yM',
+  'Dips (Triceps-Focused)': 'oA8Sxv2WeOs',
+  'Dumbbell Triceps Kickback': 'ZO81bExngMI',
+  'Diamond Push-Up': 'kGhDnFwMY3E',
+  'Rope Overhead Cable Extension': 'Fwl0T1_giQ0',
+  'Single-Arm Cable Pushdown': '7lYeoKRXO-0',
+  'Bench Dip': '0326dy_-CzM',
+  'JM Press': 'hOCW9cE-GJg',
+  'Crunch': '_M2Etme-tfE',
+  'Reverse Crunch': 'yH-oSzE5_g0',
+  'Plank': '6LqqeBtFn9M',
+  'Hanging Leg Raise': 'Pr1ieGZ5atk',
+  'Russian Twist': 'wkD8rjkodUI',
+  'Cable Woodchopper': 'ZDt4MCvjMAA',
+  'Ab Wheel Rollout': 'ndc391RFNUM',
+  'Weighted Sit-Up': 'kZvSaq192cg',
+  'Barbell Ab Rollout': 'h2c8V0YCD6c',
+  'Mountain Climbers': 'cnyTQDSE884',
+  'Side Plank': 'NXr4Fw8q60o',
+  'Kneeling Cable Crunch': 'CDO29I7PCoc',
+  'Dead Bug': 'zechBkcIMf0',
+};
+
 const EQUIPMENT = {
   bodyweight:{label:'Bodyweight', label_nl:'Lichaamsgewicht', color:'var(--eq-bodyweight)'},
   dumbbell:  {label:'Dumbbell',   label_nl:'Dumbbell',        color:'var(--eq-dumbbell)'},
@@ -405,6 +489,7 @@ const UI = {
     resultsFor: (n,q) => `${n} result${n===1?'':'s'} for "${q}"`,
     noResults: 'No exercises match. Try a different term or equipment filter.',
     noResultsGroup: 'No exercises match this filter/search.',
+    watchVideo: 'Watch video',
     footer: 'Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.',
   },
   nl: {
@@ -418,6 +503,7 @@ const UI = {
     resultsFor: (n,q) => `${n} resulta${n===1?'at':'ten'} voor "${q}"`,
     noResults: 'Geen oefeningen gevonden. Probeer een andere zoekterm of uitrustingsfilter.',
     noResultsGroup: 'Geen oefeningen gevonden voor dit filter/deze zoekopdracht.',
+    watchVideo: 'Bekijk video',
     footer: 'Persoonlijke trainingsreferentie · geen medisch advies · gebruik altijd een gewicht en bewegingsbereik dat je met een goede vorm onder controle hebt.',
   },
 };
@@ -1276,6 +1362,7 @@ function exerciseCard(ex, showGroupTag){
         ${secondary}
       </div>
       <div class="cue">${exCue(ex)}</div>
+      ${VIDEOS[ex.name] ? `<a class="video-link" href="https://www.youtube.com/watch?v=${VIDEOS[ex.name]}" target="_blank" rel="noopener">▶ ${t('watchVideo')}</a>` : ''}
     </div>
   </div>`;
 }
