@@ -7,6 +7,14 @@
 <meta name="description" content="A personal reference library of gym exercises by muscle group, with primary/secondary muscles and brief form cues.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23e8621a'/><text x='50' y='72' font-size='58' font-family='Georgia,serif' font-weight='900' text-anchor='middle' fill='white'>E</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Exercises">
+<meta name="theme-color" content="#101114">
 <style>
   :root{
     --bg:#101114;
@@ -81,6 +89,16 @@
     cursor:pointer;white-space:nowrap;flex:none;
   }
   .back-btn:hover{border-color:var(--accent)}
+  .lang-toggle{
+    background:var(--bg-elev-2);border:1px solid var(--border);
+    border-radius:10px;padding:9px 10px;font-size:12.5px;font-weight:700;
+    cursor:pointer;white-space:nowrap;flex:none;
+    display:flex;align-items:center;gap:4px;color:var(--text-faint);
+  }
+  .lang-toggle:hover{border-color:var(--accent)}
+  .lang-toggle .lang-opt{padding:2px 3px;border-radius:5px;color:var(--text-faint)}
+  .lang-toggle .lang-opt.active{color:#fff;background:var(--accent-dim)}
+  .lang-toggle .lang-sep{color:var(--border)}
 
   /* chips */
   .chip-row{
@@ -187,11 +205,14 @@
 <header class="top">
   <div class="wrap topbar-inner">
     <div class="brand" id="brandHome">
-      <span class="mark">E</span><span>Exercise Library</span>
+      <span class="mark">E</span><span id="brandLabel">Exercise Library</span>
     </div>
     <div class="search-box">
       <input id="searchInput" type="search" placeholder="Search exercises…" autocomplete="off">
     </div>
+    <button class="lang-toggle" id="langToggle" type="button">
+      <span data-lang="en" class="lang-opt active">EN</span><span class="lang-sep">/</span><span data-lang="nl" class="lang-opt">NL</span>
+    </button>
     <button class="back-btn" id="backBtn" style="display:none">← All groups</button>
   </div>
   <div class="wrap">
@@ -202,7 +223,7 @@
 <main class="wrap" id="app"></main>
 
 <footer>
-  Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.
+  <span id="footerText">Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.</span>
 </footer>
 
 <script>
@@ -210,16 +231,26 @@
    DATA
 --------------------------------------------------------- */
 const GROUPS = [
-  {id:'chest',     name:'Chest',        view:'front', parts:['chest'],       color:'#e8621a', blurb:'Pressing & fly movements for the pectorals.'},
-  {id:'back',      name:'Back',         view:'back',  parts:['back'],        color:'#3e8fd0', blurb:'Pulling movements for lats, mid-back & the posterior chain.'},
-  {id:'shoulders', name:'Shoulders',    view:'front', parts:['shoulders'],   color:'#d4ad2c', blurb:'Presses and raises for front, side & rear delts.'},
-  {id:'biceps',    name:'Biceps',       view:'front', parts:['biceps'],      color:'#9b59b6', blurb:'Curling variations for the front of the upper arm.'},
-  {id:'triceps',   name:'Triceps',      view:'back',  parts:['triceps'],     color:'#1abc9c', blurb:'Extension & pressdown movements for the back of the arm.'},
-  {id:'abs',       name:'Abs & Core',   view:'front', parts:['abs'],         color:'#e67e22', blurb:'Flexion, rotation & anti-extension work for the midsection.'},
-  {id:'legs',      name:'Legs',         view:'front', parts:['quads'],       color:'#3498db', blurb:'Quad & hamstring dominant squats, presses & lunges.'},
-  {id:'glutes',    name:'Glutes',       view:'back',  parts:['glutes'],      color:'#c0392b', blurb:'Hip-extension focused movements for the glutes.'},
-  {id:'calves',    name:'Calves',       view:'front', parts:['calves'],      color:'#27ae60', blurb:'Raises for the gastrocnemius & soleus.'},
-  {id:'forearms',  name:'Forearms',     view:'front', parts:['forearms'],    color:'#8d99a6', blurb:'Grip & wrist work for the lower arm.'},
+  {id:'chest',     name:'Chest',        view:'front', parts:['chest'],       color:'#e8621a', blurb:'Pressing & fly movements for the pectorals.',
+    nl:{name:'Borst', blurb:'Druk- en flybewegingen voor de borstspieren.'}},
+  {id:'back',      name:'Back',         view:'back',  parts:['back'],        color:'#3e8fd0', blurb:'Pulling movements for lats, mid-back & the posterior chain.',
+    nl:{name:'Rug', blurb:'Trekbewegingen voor lats, middenrug & de achterketen.'}},
+  {id:'shoulders', name:'Shoulders',    view:'front', parts:['shoulders'],   color:'#d4ad2c', blurb:'Presses and raises for front, side & rear delts.',
+    nl:{name:'Schouders', blurb:'Presses en raises voor voorste, zijdelingse & achterste schouders.'}},
+  {id:'biceps',    name:'Biceps',       view:'front', parts:['biceps'],      color:'#9b59b6', blurb:'Curling variations for the front of the upper arm.',
+    nl:{name:'Biceps', blurb:'Curl-variaties voor de voorkant van de bovenarm.'}},
+  {id:'triceps',   name:'Triceps',      view:'back',  parts:['triceps'],     color:'#1abc9c', blurb:'Extension & pressdown movements for the back of the arm.',
+    nl:{name:'Triceps', blurb:'Extensie- en pressdown-bewegingen voor de achterkant van de arm.'}},
+  {id:'abs',       name:'Abs & Core',   view:'front', parts:['abs'],         color:'#e67e22', blurb:'Flexion, rotation & anti-extension work for the midsection.',
+    nl:{name:'Buik & Core', blurb:'Flexie-, rotatie- en anti-extensiewerk voor de romp.'}},
+  {id:'legs',      name:'Legs',         view:'front', parts:['quads'],       color:'#3498db', blurb:'Quad & hamstring dominant squats, presses & lunges.',
+    nl:{name:'Benen', blurb:'Squats, presses & lunges gedomineerd door quads & hamstrings.'}},
+  {id:'glutes',    name:'Glutes',       view:'back',  parts:['glutes'],      color:'#c0392b', blurb:'Hip-extension focused movements for the glutes.',
+    nl:{name:'Bilspieren', blurb:'Op heupextensie gerichte bewegingen voor de bilspieren.'}},
+  {id:'calves',    name:'Calves',       view:'front', parts:['calves'],      color:'#27ae60', blurb:'Raises for the gastrocnemius & soleus.',
+    nl:{name:'Kuiten', blurb:'Raises voor de gastrocnemius & soleus.'}},
+  {id:'forearms',  name:'Forearms',     view:'front', parts:['forearms'],    color:'#8d99a6', blurb:'Grip & wrist work for the lower arm.',
+    nl:{name:'Onderarmen', blurb:'Grip- en polswerk voor de onderarm.'}},
 ];
 
 // Real demonstration photos, matched by exercise name, sourced from
@@ -330,6 +361,16 @@ const PHOTOS = {
   'Plate Pinch Hold': 'Plate_Pinch.jpg',
   'Wrist Roller': 'Wrist_Roller.jpg',
   'Behind-the-Back Barbell Wrist Curl': 'Standing_Palms-Up_Barbell_Behind_The_Back_Wrist_Curl.jpg',
+  'Thigh Abductor': 'Thigh_Abductor.jpg',
+  'Reverse Hyperextension': 'Reverse_Hyperextension.jpg',
+  'Smith Machine Stiff-Legged Deadlift': 'Smith_Machine_Stiff-Legged_Deadlift.jpg',
+  'Dumbbell Squat To A Bench': 'Dumbbell_Squat_To_A_Bench.jpg',
+  'Stiff-Legged Dumbbell Deadlift': 'Stiff-Legged_Dumbbell_Deadlift.jpg',
+  'Dumbbell Rear Lunge': 'Dumbbell_Rear_Lunge.jpg',
+  'Good Morning': 'Good_Morning.jpg',
+  'Zercher Squats': 'Zercher_Squats.jpg',
+  'Cable Deadlifts': 'Cable_Deadlifts.jpg',
+  'Superman': 'Superman.jpg',
   'Leverage High Row': 'Leverage_High_Row.jpg',
   'Alternating Deltoid Raise': 'Alternating_Deltoid_Raise.jpg',
   'Decline Dumbbell Triceps Extension': 'Decline_Dumbbell_Triceps_Extension.jpg',
@@ -345,11 +386,40 @@ const PHOTOS = {
 };
 
 const EQUIPMENT = {
-  bodyweight:{label:'Bodyweight', color:'var(--eq-bodyweight)'},
-  dumbbell:  {label:'Dumbbell',   color:'var(--eq-dumbbell)'},
-  barbell:   {label:'Barbell',    color:'var(--eq-barbell)'},
-  machine:   {label:'Machine',    color:'var(--eq-machine)'},
-  cable:     {label:'Cable',      color:'var(--eq-cable)'},
+  bodyweight:{label:'Bodyweight', label_nl:'Lichaamsgewicht', color:'var(--eq-bodyweight)'},
+  dumbbell:  {label:'Dumbbell',   label_nl:'Dumbbell',        color:'var(--eq-dumbbell)'},
+  barbell:   {label:'Barbell',    label_nl:'Barbell',         color:'var(--eq-barbell)'},
+  machine:   {label:'Machine',    label_nl:'Machine',         color:'var(--eq-machine)'},
+  cable:     {label:'Cable',      label_nl:'Kabel',           color:'var(--eq-cable)'},
+};
+
+const UI = {
+  en: {
+    brand: 'Exercise Library',
+    searchPlaceholder: 'Search exercises…',
+    allEquipment: 'All equipment',
+    back: '← All groups',
+    heroTitle: 'Exercise Library',
+    heroSub: 'Pick a muscle group for quick gym-floor reference: primary & secondary muscles worked, plus a one-line form cue for each exercise.',
+    exercisesLabel: n => `${n} exercise${n===1?'':'s'}`,
+    resultsFor: (n,q) => `${n} result${n===1?'':'s'} for "${q}"`,
+    noResults: 'No exercises match. Try a different term or equipment filter.',
+    noResultsGroup: 'No exercises match this filter/search.',
+    footer: 'Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.',
+  },
+  nl: {
+    brand: 'Oefeningenbibliotheek',
+    searchPlaceholder: 'Zoek oefeningen…',
+    allEquipment: 'Alle uitrusting',
+    back: '← Alle groepen',
+    heroTitle: 'Oefeningenbibliotheek',
+    heroSub: 'Kies een spiergroep voor snelle referentie in de gym: primaire & secundaire spieren die worden aangesproken, plus een korte tip voor de juiste uitvoering bij elke oefening.',
+    exercisesLabel: n => `${n} oefening${n===1?'':'en'}`,
+    resultsFor: (n,q) => `${n} resulta${n===1?'at':'ten'} voor "${q}"`,
+    noResults: 'Geen oefeningen gevonden. Probeer een andere zoekterm of uitrustingsfilter.',
+    noResultsGroup: 'Geen oefeningen gevonden voor dit filter/deze zoekopdracht.',
+    footer: 'Persoonlijke trainingsreferentie · geen medisch advies · gebruik altijd een gewicht en bewegingsbereik dat je met een goede vorm onder controle hebt.',
+  },
 };
 
 const EXERCISES = [
@@ -665,6 +735,36 @@ const EXERCISES = [
 {name:'Barbell Side Split Squat', group:'glutes', equipment:'barbell', primary:'Glutes', secondary:['Quads'],
   cue:'With the bar on your back, step one foot out to the side and sit back into that hip while keeping the other leg straight, then push back to center.',
   icon:{stance:'split', armL:'down', armR:'down', gearAt:'shoulders'}},
+{name:'Thigh Abductor', group:'glutes', equipment:'machine', primary:'Glutes (Medius)', secondary:['Hip Abductors'],
+  cue:'Sit with your legs together against the pads and push outward against the resistance, pausing briefly at the widest point before returning under control.',
+  icon:{stance:'seated', armL:'down', armR:'down', gearAt:'knee-pad'}},
+{name:'Reverse Hyperextension', group:'glutes', equipment:'machine', primary:'Glutes', secondary:['Hamstrings','Lower Back'],
+  cue:'Lie face down on the machine with your hips at the edge and swing your legs up and back using your glutes, avoiding using momentum to swing higher than you can control.',
+  icon:{stance:'lyingProne', armL:'down', armR:'down', extraBench:true}},
+{name:'Smith Machine Stiff-Legged Deadlift', group:'glutes', equipment:'machine', primary:'Glutes & Hamstrings', secondary:['Lower Back'],
+  cue:'Keep a slight knee bend and hinge at the hips, lowering the bar along your shins until you feel a stretch in your hamstrings and glutes, then drive your hips forward.',
+  icon:{stance:'hinge60', armL:'down', armR:'down', gearAt:'none'}},
+{name:'Dumbbell Squat To A Bench', group:'glutes', equipment:'dumbbell', primary:'Glutes', secondary:['Quads','Hamstrings'],
+  cue:'Hold dumbbells at your sides and squat down until you lightly touch a bench behind you, then drive back up through your heels without sitting fully down.',
+  icon:{stance:'standing', armL:'down', armR:'down'}},
+{name:'Stiff-Legged Dumbbell Deadlift', group:'glutes', equipment:'dumbbell', primary:'Hamstrings & Glutes', secondary:['Lower Back'],
+  cue:'With dumbbells in front of your thighs, hinge at the hips keeping your legs almost straight, lowering until you feel a deep hamstring stretch, then return to standing.',
+  icon:{stance:'hinge30', armL:'down', armR:'down'}},
+{name:'Dumbbell Rear Lunge', group:'glutes', equipment:'dumbbell', primary:'Glutes', secondary:['Quads','Hamstrings'],
+  cue:'Step one leg back into a reverse lunge, lowering your back knee toward the floor while keeping most of your weight through your front heel, then step back to standing.',
+  icon:{stance:'split', armL:'down', armR:'down'}},
+{name:'Good Morning', group:'glutes', equipment:'barbell', primary:'Glutes & Hamstrings', secondary:['Lower Back'],
+  cue:'With the bar across your upper back, hinge forward at the hips keeping a flat back and soft knees until your torso nears parallel with the floor, then return to standing.',
+  icon:{stance:'hinge60', armL:'down', armR:'down', gearAt:'shoulders'}},
+{name:'Zercher Squats', group:'glutes', equipment:'barbell', primary:'Glutes & Quads', secondary:['Core'],
+  cue:'Cradle the bar in the crooks of your elbows and squat down keeping your torso upright, driving through your glutes to stand back up.',
+  icon:{stance:'standing', armL:'row', armR:'row'}},
+{name:'Cable Deadlifts', group:'glutes', equipment:'cable', primary:'Glutes & Hamstrings', secondary:['Quads','Lower Back'],
+  cue:'With the cable attached low in front of you, hinge at the hips and pull the handle up by driving your hips forward, keeping the movement smooth and controlled.',
+  icon:{stance:'hinge30', armL:'down', armR:'down', cableTo:'low', cableJoint:'mid'}},
+{name:'Superman', group:'glutes', equipment:'bodyweight', primary:'Lower Back & Glutes', secondary:['Hamstrings'],
+  cue:'Lying face down with arms extended overhead, simultaneously lift your arms, chest and legs off the floor, squeezing your glutes and lower back at the top.',
+  icon:{stance:'lyingProne', armL:'reachUp', armR:'reachUp'}},
 
 // CALVES
 {name:'Standing Calf Raise', group:'calves', equipment:'machine', primary:'Calves (Gastrocnemius)', secondary:[],
@@ -718,6 +818,147 @@ const EXERCISES = [
   cue:'Let the bar roll down into your fingertips, then curl it back up by closing your hand, working the grip through a small but intense range.',
   icon:{stance:'seated', armL:'down', armR:'down'}},
 ];
+
+// Dutch translations, keyed by the (English) exercise name above.
+// Exercise names stay in English in both languages — standard gym
+// terminology used as-is in Dutch/Flemish gyms too — but primary/
+// secondary muscles and the form cue are fully translated.
+const TRANSLATIONS_NL = {
+  'Barbell Bench Press': {primary:'Borst', secondary:['Triceps','Schouders'], cue:'Grijp iets breder dan schouderbreedte, laat de stang tot het midden van je borst zakken met ellebogen rond 45° van je romp, en druk dan omhoog zonder van je borst te stuiteren.'},
+  'Incline Dumbbell Press': {primary:'Bovenste borst', secondary:['Schouders','Triceps'], cue:'Zet de bank op 30–45°, druk de dumbbells omhoog en licht naar binnen, en stop de daling wanneer je bovenarmen ongeveer evenwijdig aan de vloer zijn.'},
+  'Dumbbell Flyes': {primary:'Borst', secondary:['Schouders'], cue:'Houd een lichte, vaste buiging in je ellebogen en laat de dumbbells in een brede boog zakken tot je een rek voelt over je borst, niet in je schouders.'},
+  'Push-Up': {primary:'Borst', secondary:['Triceps','Schouders','Core'], cue:'Houd je lichaam in een rechte lijn van hoofd tot hielen en zak tot je borst net boven de vloer is, ellebogen op ongeveer 45°.'},
+  'Machine Chest Press': {primary:'Borst', secondary:['Triceps'], cue:'Zet de zitting zo dat de handvatten op het midden van je borst uitkomen, en druk naar voren zonder je ellebogen bovenaan hard te vergrendelen.'},
+  'Pec Deck (Machine Fly)': {primary:'Borst', secondary:['Schouders'], cue:'Houd een lichte buiging in je ellebogen en span je borst aan om de pads samen te brengen; laat ze niet hard tegen elkaar klappen op het hoogste punt.'},
+  'Cable Crossover': {primary:'Borst', secondary:['Schouders'], cue:'Sta iets voor de katrollen met een lichte voorwaartse helling, en kruis de kabels voor je heupen met een trage, gecontroleerde knijpbeweging.'},
+  'Dips (Chest-Focused)': {primary:'Onderste borst', secondary:['Triceps','Schouders'], cue:'Leun je romp naar voren en laat je ellebogen licht uitwaaieren om de borst te accentueren; ga niet dieper dan een hoek van 90° in de elleboog als je schouders protesteren.'},
+  'Incline Barbell Press': {primary:'Bovenste borst', secondary:['Schouders','Triceps'], cue:'Zet de bank op 30–45°, laat de stang zakken tot je bovenste borst, en druk omhoog en licht naar achter zonder je ellebogen tot 90° te laten uitwaaieren.'},
+  'Decline Bench Press': {primary:'Onderste borst', secondary:['Triceps','Schouders'], cue:'Laat de stang zakken tot je onderste borst met ellebogen iets meer ingetrokken dan bij een vlakke press, en druk in een rechte lijn omhoog zonder te stuiteren.'},
+  'Decline Push-Up': {primary:'Bovenste borst', secondary:['Schouders','Triceps','Core'], cue:'Zet je voeten op een bank of opstapje, houd je lichaam in een rechte lijn, en laat je borst richting de vloer zakken met ellebogen op ongeveer 45°.'},
+  'Incline Cable Fly': {primary:'Bovenste borst', secondary:['Schouders'], cue:'Zet beide katrollen laag, houd een lichte buiging in je ellebogen, en breng je handen in een boog omhoog en samen tot ooghoogte.'},
+  'Machine Incline Press': {primary:'Bovenste borst', secondary:['Triceps'], cue:'Zet de zitting zo dat de handvatten op je bovenste borst uitkomen, en druk omhoog en licht naar voren zonder je schouders op te trekken.'},
+
+  'Pull-Up': {primary:'Lats', secondary:['Biceps','Achterste schouders','Core'], cue:'Start vanuit volledig hangen, trek je borst richting de stang door je ellebogen naar beneden en achter te sturen, en vermijd zwaaien of kippen.'},
+  'Barbell Bent-Over Row': {primary:'Middenrug & lats', secondary:['Biceps','Achterste schouders'], cue:'Buig ongeveer 45° in de heup, houd een vlakke rug, en roei de stang naar je onderste ribben zonder met je onderrug te trekken.'},
+  'Single-Arm Dumbbell Row': {primary:'Lats', secondary:['Biceps','Achterste schouders'], cue:'Steun jezelf op een bank, houd je rug vlak, en trek de dumbbell naar je heup terwijl je elleboog dicht bij je lichaam blijft.'},
+  'Lat Pulldown': {primary:'Lats', secondary:['Biceps'], cue:'Trek de stang naar je bovenste borst door je ellebogen naar beneden te sturen, met een lichte achterwaartse helling — trek niet met momentum.'},
+  'Seated Cable Row': {primary:'Middenrug', secondary:['Lats','Biceps'], cue:'Houd je romp rechtop en je rug vlak, roei naar je buik, en laat je schouderbladen volledig naar voren komen bij de rek.'},
+  'T-Bar Row': {primary:'Middenrug', secondary:['Lats','Biceps'], cue:'Houd je borst omhoog en je rug vlak, en trek het handvat naar je borstbeen zonder je onderrug te ronden.'},
+  'Deadlift': {primary:'Achterketen', secondary:['Bilspieren','Hamstrings','Onderarmen'], cue:'Houd de stang dicht bij je schenen, span je core aan, en duw door je hielen terwijl je je wervelkolom neutraal houdt.'},
+  'Leverage High Row': {primary:'Middenrug', secondary:['Lats','Biceps'], cue:'Houd je borst tegen de pad en trek je ellebogen naar achter en omhoog, en knijp je schouderbladen bovenaan samen.'},
+  'Wide-Grip Pull-Up': {primary:'Lats', secondary:['Biceps','Core'], cue:'Neem een grip breder dan schouderbreedte en trek je borst richting de stang, met de focus op je ellebogen naar beneden en buiten sturen.'},
+  'Barbell Shrug': {primary:'Trapezius', secondary:['Onderarmen'], cue:'Laat de stang op armlengte hangen en trek je schouders recht omhoog richting je oren zonder ze te rollen of je ellebogen te buigen.'},
+  'Cable Straight-Arm Pulldown': {primary:'Lats', secondary:['Triceps'], cue:'Houd je armen bijna gestrekt en buig licht voorover, en trek de stang naar je dijen met je lats, niet met je armen.'},
+  'Barbell Pendlay Row': {primary:'Middenrug & lats', secondary:['Biceps','Achterste schouders'], cue:'Start elke herhaling met de stang op de grond, houd je romp bijna evenwijdig aan de vloer, en roei explosief naar je onderste ribben.'},
+  'Reverse-Grip Lat Pulldown': {primary:'Lats', secondary:['Biceps'], cue:'Neem een ondergreep op schouderbreedte en trek de stang naar je bovenste borst, met je ellebogen dicht bij je romp.'},
+
+  'Barbell Overhead Press': {primary:'Voorste & zijdelingse schouders', secondary:['Triceps'], cue:'Span je core aan, druk de stang recht omhoog terwijl je je kin licht intrekt om hem te laten passeren, en vermijd het hol trekken van je onderrug.'},
+  'Dumbbell Shoulder Press': {primary:'Schouders', secondary:['Triceps'], cue:'Druk de dumbbells omhoog en licht naar binnen tot ze elkaar bijna raken boven je hoofd, zonder je ellebogen bij het zakken boven schouderhoogte te laten uitwaaieren.'},
+  'Lateral Raise': {primary:'Zijdelingse schouders', secondary:[], cue:'Til de dumbbells met een zachte elleboogbuiging naar de zijkant, alleen tot schouderhoogte, en leid met je ellebogen, niet met je handen.'},
+  'Front Raise': {primary:'Voorste schouders', secondary:[], cue:'Til een of beide dumbbells gecontroleerd tot ooghoogte, en vermijd momentum vanuit je heupen.'},
+  'Rear Delt Fly': {primary:'Achterste schouders', secondary:['Bovenrug'], cue:'Buig voorover met een vlakke rug en til de dumbbells naar de zijkant, en knijp bovenaan je schouderbladen samen.'},
+  'Machine Shoulder Press': {primary:'Schouders', secondary:['Triceps'], cue:'Zet de zitting zo dat de handvatten op schouderhoogte starten en druk recht omhoog zonder je schouders naar je oren op te trekken.'},
+  'Cable Lateral Raise': {primary:'Zijdelingse schouders', secondary:[], cue:'Sta zijwaarts ten opzichte van de katrol en til het handvat naar schouderhoogte, en houd de beweging traag bij het zakken.'},
+  'Face Pull': {primary:'Achterste schouders', secondary:['Bovenrug','Rotator cuff'], cue:'Trek het touw naar je gezicht met hoge ellebogen voorop, en draai je handen naar achter zodat je duimen uiteindelijk naar achter wijzen.'},
+  'Arnold Press': {primary:'Schouders (alle koppen)', secondary:['Triceps'], cue:'Start met handpalmen naar jezelf gericht op schouderhoogte, draai je handpalmen naar voren terwijl je omhoog drukt, en keer de draai om bij het zakken.'},
+  'Barbell Upright Row': {primary:'Zijdelingse schouders & trapezius', secondary:['Biceps'], cue:'Trek de stang recht omhoog dicht bij je lichaam, leid met je ellebogen, en stop rond borsthoogte om je schouders te beschermen.'},
+  'Alternating Deltoid Raise': {primary:'Zijdelingse schouders', secondary:[], cue:'Til één dumbbell naar de zijkant terwijl de andere bij je heup blijft, en wissel af met een gecontroleerd tempo zonder te zwaaien.'},
+  'Cable Front Raise': {primary:'Voorste schouders', secondary:[], cue:'Sta met je rug naar de katrol en til het handvat naar voren tot ooghoogte met een gestrekte, gecontroleerde arm.'},
+  'Reverse Pec Deck (Rear Delt Machine Fly)': {primary:'Achterste schouders', secondary:['Bovenrug'], cue:'Ga met je gezicht naar de pad zitten, houd een lichte elleboogbuiging, en trek de handvatten naar achter en buiten tot je armen in lijn zijn met je schouders.'},
+
+  'Alternating Dumbbell Curl': {primary:'Biceps', secondary:['Onderarmen'], cue:'Curl één arm tegelijk, houd je elleboog vastgepind aan je zij, en draai je handpalm omhoog terwijl je optilt.'},
+  'Barbell Curl': {primary:'Biceps', secondary:[], cue:'Houd je ellebogen vast aan je zij en curl de stang omhoog zonder met je romp te zwaaien of momentum uit je heupen te gebruiken.'},
+  'Hammer Curl': {primary:'Biceps & brachialis', secondary:['Onderarmen'], cue:'Houd je handpalmen tijdens de hele curl naar elkaar gericht om de buitenkant van de arm en onderarm samen met de biceps aan te spreken.'},
+  'Cable Curl': {primary:'Biceps', secondary:[], cue:'Houd constante spanning door je ellebogen niet naar voren te laten drijven, en controleer de negatieve fase helemaal naar beneden.'},
+  'Preacher Curl': {primary:'Biceps', secondary:[], cue:'Laat je bovenarmen volledig op de pad rusten en vergrendel je ellebogen onderaan niet volledig, om spanning op de spier te houden.'},
+  'Concentration Curl': {primary:'Biceps', secondary:[], cue:'Steun je elleboog tegen je binnendij en curl met een trage, strikte beweging, en knijp bovenaan hard samen.'},
+  'Incline Dumbbell Curl': {primary:'Biceps (lange kop)', secondary:[], cue:'Ga achterover zitten op een incline bank zodat je armen achter je romp hangen, en curl zonder je ellebogen naar voren te laten drijven.'},
+  'Spider Curl': {primary:'Biceps', secondary:[], cue:'Leun borst-eerst over de schuine pad zodat je armen recht naar beneden hangen, en curl zonder je bovenarmen naar achter te zwaaien.'},
+  'Cable Rope Hammer Curl': {primary:'Biceps & brachialis', secondary:['Onderarmen'], cue:'Houd je handpalmen naar elkaar gericht op het touw en curl omhoog zonder je ellebogen van je romp te laten wegdrijven.'},
+  'Zottman Curl': {primary:'Biceps', secondary:['Onderarmen'], cue:'Curl omhoog met handpalmen naar boven, draai dan je polsen zodat de handpalmen naar beneden wijzen voor je traag laat zakken voor de onderarm-opbouwende negatieve fase.'},
+  'EZ-Bar Curl': {primary:'Biceps', secondary:[], cue:'Gebruik de gehoekte grip om je polsen comfortabel te houden, en curl de stang omhoog zonder je ellebogen naar voren te laten reizen.'},
+
+  'Cable Triceps Pushdown': {primary:'Triceps', secondary:[], cue:'Houd je ellebogen vastgepind aan je zij en strek je onderarmen volledig naar beneden zonder je ellebogen te laten uitwaaieren.'},
+  'Decline Dumbbell Triceps Extension': {primary:'Triceps (lange kop)', secondary:[], cue:'Laat de dumbbells achter je hoofd zakken op een decline bank met ellebogen naar boven gericht, en strek dan terug naar de startpositie.'},
+  'Lying Triceps Extension (Skull Crusher)': {primary:'Triceps', secondary:[], cue:'Laat de stang richting je voorhoofd zakken door alleen in de elleboog te buigen, en houd je bovenarmen stil en loodrecht op de vloer.'},
+  'Close-Grip Bench Press': {primary:'Triceps', secondary:['Borst'], cue:'Grijp net binnen schouderbreedte en houd je ellebogen dicht bij je lichaam terwijl je drukt.'},
+  'Dips (Triceps-Focused)': {primary:'Triceps', secondary:['Borst','Schouders'], cue:'Houd je romp rechtop en je ellebogen dicht bij je zij om de triceps boven de borst te accentueren.'},
+  'Dumbbell Triceps Kickback': {primary:'Triceps', secondary:[], cue:'Houd je bovenarm evenwijdig aan de vloer en vast op zijn plaats, en strek alleen vanuit de elleboog.'},
+  'Diamond Push-Up': {primary:'Triceps', secondary:['Borst'], cue:'Vorm een diamantvorm met je duimen en wijsvingers onder je borst, en zak met ellebogen dicht bij je lichaam.'},
+  'Rope Overhead Cable Extension': {primary:'Triceps (lange kop)', secondary:[], cue:'Sta met je rug naar een lage katrol, houd je ellebogen naar voren gericht dicht bij je hoofd, en strek je onderarmen volledig boven je hoofd.'},
+  'Single-Arm Cable Pushdown': {primary:'Triceps', secondary:[], cue:'Houd je elleboog vastgepind aan je zij en strek één arm volledig naar beneden, en weersta de neiging om je romp mee te bewegen.'},
+  'Bench Dip': {primary:'Triceps', secondary:['Schouders','Borst'], cue:'Houd je heupen dicht bij de bank en je ellebogen recht naar achter, en zak tot je bovenarmen ongeveer evenwijdig aan de vloer zijn.'},
+  'JM Press': {primary:'Triceps', secondary:['Borst'], cue:'Laat de stang zakken richting je bovenste borst/kin in een hybride pad tussen een skull crusher en een close-grip press, met ellebogen ingetrokken.'},
+
+  'Crunch': {primary:'Bovenste buikspieren', secondary:[], cue:'Til je schouderbladen van de vloer met je buikspieren, niet met je nek of heupbuigers, en houd een kleine opening onder je kin.'},
+  'Reverse Crunch': {primary:'Onderste buikspieren', secondary:[], cue:'Til je heupen van de vloer richting je ribbenkast met je onderste buikspieren, en houd de beweging traag en gecontroleerd.'},
+  'Plank': {primary:'Core', secondary:['Schouders'], cue:'Houd een rechte lijn van hoofd tot hielen, span je bilspieren aan, en laat je heupen niet zakken of omhoog komen.'},
+  'Hanging Leg Raise': {primary:'Onderste buikspieren & heupbuigers', secondary:[], cue:'Vermijd zwaaien — til je benen op met je buikspieren, en rol je bekken bovenaan licht op in plaats van gewoon je benen te heffen.'},
+  'Russian Twist': {primary:'Schuine buikspieren', secondary:[], cue:'Houd je borst omhoog en draai vanuit je romp, niet alleen je armen, en tik het gewicht licht neer aan elke kant.'},
+  'Cable Woodchopper': {primary:'Schuine buikspieren', secondary:['Core'], cue:'Draai door je romp terwijl je je heupen relatief stabiel houdt, en trek de kabel diagonaal over je lichaam.'},
+  'Ab Wheel Rollout': {primary:'Core', secondary:['Schouders','Lats'], cue:'Houd je heupen ingetrokken en je rug vlak terwijl je uitrolt, en ga alleen zo ver als je kunt controleren zonder dat je onderrug doorzakt.'},
+  'Weighted Sit-Up': {primary:'Buikspieren', secondary:['Heupbuigers'], cue:'Houd het gewicht tegen je borst en kom soepel omhoog zonder met je nek naar voren te trekken.'},
+  'Barbell Ab Rollout': {primary:'Core', secondary:['Schouders','Lats'], cue:'Rol geknield met een belaste stang naar voren, houd je heupen ingetrokken en je rug vlak, en ga alleen zo ver als je kunt controleren voor je terugrolt.'},
+  'Mountain Climbers': {primary:'Core', secondary:['Heupbuigers','Schouders'], cue:'Houd je heupen op gelijke hoogte in een plankpositie en stuur je knieën snel richting je borst zonder je heupen omhoog te laten komen.'},
+  'Side Plank': {primary:'Schuine buikspieren', secondary:['Schouders','Core'], cue:'Stapel je voeten en steun op één onderarm, en houd je lichaam in een rechte lijn zonder je heupen richting de vloer te laten zakken.'},
+  'Kneeling Cable Crunch': {primary:'Buikspieren', secondary:['Schuine buikspieren'], cue:'Kniel onder een hoge katrol, houd het touw bij je hoofd, en crunch naar beneden door je wervelkolom te ronden, niet door met je armen te trekken.'},
+  'Dead Bug': {primary:'Core', secondary:['Heupbuigers'], cue:'Laat tegengestelde arm en been richting de vloer zakken terwijl je je onderrug plat tegen de grond gedrukt houdt, herstel dan en wissel van kant.'},
+
+  'Barbell Back Squat': {primary:'Quads', secondary:['Bilspieren','Hamstrings','Core'], cue:'Houd je borst omhoog en je knieën in lijn met je tenen, en zak tot je heupen op of onder knieniveau zijn.'},
+  'Leg Press': {primary:'Quads', secondary:['Bilspieren','Hamstrings'], cue:'Houd je onderrug plat tegen de pad en vergrendel je knieën bovenaan niet hard.'},
+  'Dumbbell Lunge': {primary:'Quads', secondary:['Bilspieren','Hamstrings'], cue:'Stap naar voren en zak tot beide knieën bijna 90° zijn, en houd je voorste knie in lijn met je enkel, niet voorbij je tenen.'},
+  'Leg Extension': {primary:'Quads', secondary:[], cue:'Strek je benen volledig maar sla niet hard door bovenaan; laat het gewicht traag terug zakken.'},
+  'Romanian Deadlift': {primary:'Hamstrings', secondary:['Bilspieren','Onderrug'], cue:'Duw je heupen naar achter met een lichte kniebuiging en een vlakke rug, en laat het gewicht zakken tot je een rek in je hamstrings voelt.'},
+  'Leg Curl (Lying/Seated)': {primary:'Hamstrings', secondary:[], cue:'Curl de pad richting je bilspieren met controle, en vermijd het optillen van je heupen van de pad.'},
+  'Bulgarian Split Squat': {primary:'Quads', secondary:['Bilspieren'], cue:'Rust je achterste voet op een bank achter je en zak recht naar beneden, met het meeste gewicht op je voorste been.'},
+  'Goblet Squat': {primary:'Quads', secondary:['Bilspieren','Core'], cue:'Houd de dumbbell dicht bij je borst en zak tussen je knieën, met je romp rechtop.'},
+  'Bodyweight Squat': {primary:'Quads', secondary:['Bilspieren'], cue:'Zet je heupen naar achter en beneden terwijl je hielen op de grond blijven en je borst omhoog blijft, zo laag als je mobiliteit toelaat.'},
+  'Walking Lunge': {primary:'Quads', secondary:['Bilspieren','Hamstrings'], cue:'Zet een gecontroleerde stap naar voren en laat je achterste knie richting de vloer zakken zonder je voorste knie naar binnen te laten vallen.'},
+  'Front Squat': {primary:'Quads', secondary:['Bilspieren','Core'], cue:'Rust de stang op je voorste schouders met hoge ellebogen, en zak met een rechtopstaandere romp dan bij een back squat.'},
+  'Hack Squat (Machine)': {primary:'Quads', secondary:['Bilspieren'], cue:'Houd je rug plat tegen de pad en zak tot je dijen ongeveer evenwijdig zijn, en duw door je hele voet om te staan.'},
+  'Barbell Step Ups': {primary:'Quads', secondary:['Bilspieren','Hamstrings'], cue:'Rust de stang op je bovenrug en stap op een box, en duw door de hiel van je voorste voet zonder af te zetten met je achterste been.'},
+  'Sissy Squat': {primary:'Quads', secondary:[], cue:'Kom op je tenen en leun naar achter vanuit je knieën, met je heupen gestrekt, en zak dan gecontroleerd voor je weer omhoog duwt.'},
+  'Glute Ham Raise': {primary:'Hamstrings', secondary:['Bilspieren'], cue:'Verankeer je voeten in de machinepad en laat je romp gecontroleerd naar voren zakken, en gebruik je hamstrings om jezelf terug omhoog te trekken.'},
+
+  'Barbell Hip Thrust': {primary:'Bilspieren', secondary:['Hamstrings'], cue:'Duw door je hielen en span je bilspieren bovenaan hard aan, met je kin ingetrokken en ribben naar beneden.'},
+  'Glute Bridge': {primary:'Bilspieren', secondary:['Hamstrings'], cue:'Duw door je hielen en span je bilspieren bovenaan aan, en vermijd het hol trekken van je onderrug.'},
+  'Cable Glute Kickback': {primary:'Bilspieren', secondary:[], cue:'Houd je standbeen licht gebogen en trap één been naar achter en omhoog met je bilspier, niet met je onderrug.'},
+  'Sumo Deadlift': {primary:'Bilspieren', secondary:['Hamstrings','Quads'], cue:'Neem een brede stand met tenen naar buiten, en duw je knieën naar buiten in lijn met je tenen terwijl je omhoog komt.'},
+  'Dumbbell Step-Up': {primary:'Bilspieren', secondary:['Quads'], cue:'Duw door de hiel van je voorste voet om op de box te gaan staan, en vermijd afzetten met je achterste voet.'},
+  'Cable Pull-Through': {primary:'Bilspieren', secondary:['Hamstrings'], cue:'Sta met je rug naar een lage katrol, buig in je heupen met een vlakke rug, en duw je heupen naar voren tot staand, met een harde spanning in je bilspieren.'},
+  'Single-Leg Glute Bridge': {primary:'Bilspieren', secondary:['Hamstrings'], cue:'Strek één been recht en duw door de hiel van je staande voet, en houd je heupen op gelijke hoogte terwijl je optilt.'},
+  'Glute Kickback': {primary:'Bilspieren', secondary:[], cue:'Op handen en knieën, trap één been recht naar achter en omhoog met je bilspier, met je core aangespannen en zonder je onderrug hol te trekken.'},
+  'Barbell Glute Bridge': {primary:'Bilspieren', secondary:['Hamstrings'], cue:'Rol de stang tot hij over je heupplooi zit, duw door je hielen, en span je bilspieren bovenaan hard aan zonder je rug hol te trekken.'},
+  'Barbell Side Split Squat': {primary:'Bilspieren', secondary:['Quads'], cue:'Met de stang op je rug, stap één voet opzij en zak in die heup terwijl je het andere been gestrekt houdt, en duw dan terug naar het midden.'},
+  'Thigh Abductor': {primary:'Bilspieren (medius)', secondary:['Heupabductoren'], cue:'Ga zitten met je benen tegen elkaar tegen de pads en duw naar buiten tegen de weerstand, met een korte pauze op het breedste punt voor je gecontroleerd terugkeert.'},
+  'Reverse Hyperextension': {primary:'Bilspieren', secondary:['Hamstrings','Onderrug'], cue:'Lig op je buik op de machine met je heupen aan de rand, en zwaai je benen omhoog en naar achter met je bilspieren, zonder hoger te zwaaien dan je kunt controleren.'},
+  'Smith Machine Stiff-Legged Deadlift': {primary:'Bilspieren & hamstrings', secondary:['Onderrug'], cue:'Houd een lichte kniebuiging en buig in je heupen, en laat de stang langs je schenen zakken tot je een rek voelt in je hamstrings en bilspieren, en duw dan je heupen naar voren.'},
+  'Dumbbell Squat To A Bench': {primary:'Bilspieren', secondary:['Quads','Hamstrings'], cue:'Houd dumbbells aan je zij en zak tot je een bank achter je licht aanraakt, en duw dan door je hielen terug omhoog zonder volledig te gaan zitten.'},
+  'Stiff-Legged Dumbbell Deadlift': {primary:'Hamstrings & bilspieren', secondary:['Onderrug'], cue:'Met dumbbells voor je dijen, buig in je heupen terwijl je je benen bijna gestrekt houdt, en zak tot je een diepe rek in je hamstrings voelt, en keer dan terug naar staand.'},
+  'Dumbbell Rear Lunge': {primary:'Bilspieren', secondary:['Quads','Hamstrings'], cue:'Stap met één been naar achter in een reverse lunge, en laat je achterste knie richting de vloer zakken met het meeste gewicht door je voorste hiel, en stap dan terug naar staand.'},
+  'Good Morning': {primary:'Bilspieren & hamstrings', secondary:['Onderrug'], cue:'Met de stang op je bovenrug, buig voorover in je heupen met een vlakke rug en zachte knieën tot je romp bijna evenwijdig is aan de vloer, en keer dan terug naar staand.'},
+  'Zercher Squats': {primary:'Bilspieren & quads', secondary:['Core'], cue:'Draag de stang in de holtes van je ellebogen en zak met je romp rechtop, en duw door je bilspieren om weer te staan.'},
+  'Cable Deadlifts': {primary:'Bilspieren & hamstrings', secondary:['Quads','Onderrug'], cue:'Met de kabel laag voor je bevestigd, buig in je heupen en trek het handvat omhoog door je heupen naar voren te duwen, met een vloeiende, gecontroleerde beweging.'},
+  'Superman': {primary:'Onderrug & bilspieren', secondary:['Hamstrings'], cue:'Lig op je buik met armen gestrekt boven je hoofd, en til tegelijk je armen, borst en benen van de vloer, met een spanning in je bilspieren en onderrug bovenaan.'},
+
+  'Standing Calf Raise': {primary:'Kuiten (gastrocnemius)', secondary:[], cue:'Kom zo hoog mogelijk op je tenen en zak tot je een volledige rek voelt in je kuit.'},
+  'Seated Calf Raise': {primary:'Kuiten (soleus)', secondary:[], cue:'Houd je knieën de hele tijd gebogen en duw door de bal van je voet met een volledig bewegingsbereik.'},
+  'Dumbbell Calf Raise': {primary:'Kuiten', secondary:[], cue:'Sta op een verhoogde rand voor een diepere rek en kom op je tenen met een traag, gecontroleerd tempo.'},
+  'Smith Machine Calf Raise': {primary:'Kuiten', secondary:[], cue:'Plaats de stang op je schouders in de smith machine en duw door de bal van je voet, en kom zo hoog mogelijk bij elke herhaling.'},
+  'Donkey Calf Raise': {primary:'Kuiten (gastrocnemius)', secondary:[], cue:'Buig voorover met je heupen ondersteund op de pad en kom op je tenen, met een diepe rek onderaan elke herhaling.'},
+  'Dumbbell Seated One-Leg Calf Raise': {primary:'Kuiten (soleus)', secondary:[], cue:'Ga zitten met een dumbbell op één knie en duw door de bal van die voet, met een trage beweging en een volledig bereik.'},
+  'Seated Barbell Calf Raise': {primary:'Kuiten (soleus)', secondary:[], cue:'Rust de stang op je knieën, houd je knieën de hele set gebogen, en duw door de bal van je voet.'},
+  'Rocking Standing Calf Raise': {primary:'Kuiten', secondary:[], cue:'Met de stang op je rug, wieg naar voren op je tenen en naar achter op je hielen in een doorlopende beweging voor een groter bereik in de kuit.'},
+
+  'Dumbbell Wrist Curl': {primary:'Onderarm buigers', secondary:[], cue:'Rust je onderarmen op je dijen of een bank en curl alleen je polsen door een volledig bewegingsbereik.'},
+  'Reverse Barbell Curl': {primary:'Onderarm strekkers', secondary:['Biceps'], cue:'Gebruik een bovenhandse grip en curl de stang omhoog terwijl je je polsen stevig houdt en je ellebogen vast aan je zij.'},
+  'Farmer’s Carry': {primary:'Onderarmen & grip', secondary:['Core','Trapezius'], cue:'Houd je schouders naar achter en je core aangespannen, en loop met een rechte houding zonder de gewichten te laten zwaaien.'},
+  'Reverse Cable Curl': {primary:'Onderarm strekkers', secondary:['Biceps'], cue:'Gebruik een bovenhandse grip op een rechte stang en curl omhoog terwijl je je polsen vergrendeld houdt en je ellebogen vast aan je zij.'},
+  'Plate Pinch Hold': {primary:'Onderarmen & grip', secondary:[], cue:'Knijp twee gewichtsschijven met de gladde kant naar buiten tussen je vingers en duim, en houd vast zonder ze uit elkaar te laten glijden.'},
+  'Wrist Roller': {primary:'Onderarmen', secondary:[], cue:'Houd de roller met gestrekte armen voor je en wind het gewicht volledig op met je polsen, en wind dan gecontroleerd weer af.'},
+  'Behind-the-Back Barbell Wrist Curl': {primary:'Onderarm buigers', secondary:[], cue:'Houd de stang achter je rug op heuphoogte en curl hem omhoog met alleen je polsen, met je armen stil.'},
+  'Finger Curls': {primary:'Onderarmen & grip', secondary:[], cue:'Laat de stang tot in je vingertoppen afrollen, en curl hem terug omhoog door je hand te sluiten, en train je grip door een klein maar intens bereik.'},
+};
 
 /* ---------------------------------------------------------
    BODY DIAGRAM (simple silhouette, highlighted region)
@@ -989,19 +1230,32 @@ function exerciseIcon(spec){
 /* ---------------------------------------------------------
    STATE + RENDER
 --------------------------------------------------------- */
-const state = { groupId: null, search: '', equipment: 'all' };
+const savedLang = (() => { try { return localStorage.getItem('exlib-lang'); } catch(e){ return null; } })();
+const state = { groupId: null, search: '', equipment: 'all', lang: (savedLang === 'nl') ? 'nl' : 'en' };
 
 function groupById(id){ return GROUPS.find(g => g.id === id); }
 function exerciseCount(id){ return EXERCISES.filter(e => e.group === id).length; }
 
+function t(key, ...args){
+  const val = UI[state.lang][key];
+  return typeof val === 'function' ? val(...args) : val;
+}
+function groupName(g){ return state.lang === 'nl' && g.nl ? g.nl.name : g.name; }
+function groupBlurb(g){ return state.lang === 'nl' && g.nl ? g.nl.blurb : g.blurb; }
+function eqLabel(eq){ const meta = EQUIPMENT[eq]; return state.lang === 'nl' ? meta.label_nl : meta.label; }
+function exTr(ex){ return state.lang === 'nl' ? TRANSLATIONS_NL[ex.name] : null; }
+function exPrimary(ex){ const tr = exTr(ex); return tr ? tr.primary : ex.primary; }
+function exSecondary(ex){ const tr = exTr(ex); return tr ? tr.secondary : ex.secondary; }
+function exCue(ex){ const tr = exTr(ex); return tr ? tr.cue : ex.cue; }
+
 function eqBadge(eq){
   const meta = EQUIPMENT[eq];
-  return `<span class="eq-badge" style="background:${meta.color}">${meta.label}</span>`;
+  return `<span class="eq-badge" style="background:${meta.color}">${eqLabel(eq)}</span>`;
 }
 
 function exerciseCard(ex, showGroupTag){
   const g = groupById(ex.group);
-  const secondary = ex.secondary.map(s => `<span class="pill secondary">${s}</span>`).join('');
+  const secondary = exSecondary(ex).map(s => `<span class="pill secondary">${s}</span>`).join('');
   const iconSpec = Object.assign({equipment: ex.equipment}, ex.icon || {});
   const photo = PHOTOS[ex.name];
   const media = photo
@@ -1012,16 +1266,16 @@ function exerciseCard(ex, showGroupTag){
     <div class="ex-body">
       <div class="ex-top">
         <div>
-          ${showGroupTag ? `<div class="group-tag" style="color:${g.color}">${g.name}</div>` : ''}
+          ${showGroupTag ? `<div class="group-tag" style="color:${g.color}">${groupName(g)}</div>` : ''}
           <div class="ex-name">${ex.name}</div>
         </div>
         ${eqBadge(ex.equipment)}
       </div>
       <div class="muscle-row">
-        <span class="pill primary">${ex.primary}</span>
+        <span class="pill primary">${exPrimary(ex)}</span>
         ${secondary}
       </div>
-      <div class="cue">${ex.cue}</div>
+      <div class="cue">${exCue(ex)}</div>
     </div>
   </div>`;
 }
@@ -1030,7 +1284,7 @@ function matchesFilters(ex){
   if(state.equipment !== 'all' && ex.equipment !== state.equipment) return false;
   if(state.search){
     const q = state.search.toLowerCase();
-    const hay = (ex.name + ' ' + ex.primary + ' ' + ex.secondary.join(' ')).toLowerCase();
+    const hay = (ex.name + ' ' + exPrimary(ex) + ' ' + exSecondary(ex).join(' ')).toLowerCase();
     if(!hay.includes(q)) return false;
   }
   return true;
@@ -1038,11 +1292,11 @@ function matchesFilters(ex){
 
 function renderChips(){
   const chipRow = document.getElementById('chipRow');
-  let html = `<div class="chip ${state.equipment==='all'?'active':''}" data-eq="all">All equipment</div>`;
+  let html = `<div class="chip ${state.equipment==='all'?'active':''}" data-eq="all">${t('allEquipment')}</div>`;
   Object.keys(EQUIPMENT).forEach(key => {
     const meta = EQUIPMENT[key];
     html += `<div class="chip ${state.equipment===key?'active':''}" data-eq="${key}">
-      <span class="dot" style="background:${meta.color}"></span>${meta.label}
+      <span class="dot" style="background:${meta.color}"></span>${eqLabel(key)}
     </div>`;
   });
   chipRow.innerHTML = html;
@@ -1055,6 +1309,20 @@ function renderChips(){
   });
 }
 
+function setLang(lang){
+  state.lang = lang;
+  try { localStorage.setItem('exlib-lang', lang); } catch(e){}
+  document.getElementById('brandLabel').textContent = t('brand');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+  document.getElementById('backBtn').textContent = t('back');
+  document.getElementById('footerText').textContent = t('footer');
+  document.querySelectorAll('#langToggle .lang-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+  renderChips();
+  renderApp();
+}
+
 function renderApp(){
   const app = document.getElementById('app');
   const backBtn = document.getElementById('backBtn');
@@ -1064,9 +1332,9 @@ function renderApp(){
   if(!state.groupId && state.search){
     const results = EXERCISES.filter(matchesFilters);
     app.innerHTML = `
-      <div class="section-label">${results.length} result${results.length===1?'':'s'} for "${state.search}"</div>
+      <div class="section-label">${t('resultsFor', results.length, state.search)}</div>
       <div class="ex-grid">${results.map(e => exerciseCard(e, true)).join('') || ''}</div>
-      ${results.length===0 ? '<div class="empty">No exercises match. Try a different term or equipment filter.</div>' : ''}
+      ${results.length===0 ? `<div class="empty">${t('noResults')}</div>` : ''}
     `;
     return;
   }
@@ -1075,15 +1343,15 @@ function renderApp(){
   if(!state.groupId){
     app.innerHTML = `
       <div class="hero">
-        <h1>Exercise Library</h1>
-        <p>Pick a muscle group for quick gym-floor reference: primary &amp; secondary muscles worked, plus a one-line form cue for each exercise.</p>
+        <h1>${t('heroTitle')}</h1>
+        <p>${t('heroSub')}</p>
       </div>
       <div class="group-grid">
         ${GROUPS.map(g => `
           <div class="group-card" style="--group-color:${g.color}" data-group="${g.id}">
             ${bodySvg(g.view, g.parts, g.color)}
-            <div class="gname">${g.name}</div>
-            <div class="gcount">${exerciseCount(g.id)} exercises</div>
+            <div class="gname">${groupName(g)}</div>
+            <div class="gcount">${t('exercisesLabel', exerciseCount(g.id))}</div>
           </div>
         `).join('')}
       </div>
@@ -1108,12 +1376,12 @@ function renderApp(){
     <div class="group-header">
       ${bodySvg(g.view, g.parts, g.color)}
       <div>
-        <h2 style="color:${g.color}">${g.name}</h2>
-        <p class="sub">${g.blurb}</p>
+        <h2 style="color:${g.color}">${groupName(g)}</h2>
+        <p class="sub">${groupBlurb(g)}</p>
       </div>
     </div>
     <div class="ex-grid">${list.map(e => exerciseCard(e, false)).join('')}</div>
-    ${list.length===0 ? '<div class="empty">No exercises match this filter/search.</div>' : ''}
+    ${list.length===0 ? `<div class="empty">${t('noResultsGroup')}</div>` : ''}
   `;
 }
 
@@ -1149,10 +1417,23 @@ window.addEventListener('hashchange', () => {
   renderApp();
 });
 
+document.getElementById('langToggle').addEventListener('click', () => {
+  setLang(state.lang === 'en' ? 'nl' : 'en');
+});
+
 /* init */
 (function init(){
   const id = location.hash.replace('#','');
   state.groupId = groupById(id) ? id : null;
+  if(state.lang === 'nl'){
+    document.getElementById('brandLabel').textContent = t('brand');
+    document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+    document.getElementById('backBtn').textContent = t('back');
+    document.getElementById('footerText').textContent = t('footer');
+    document.querySelectorAll('#langToggle .lang-opt').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === 'nl');
+    });
+  }
   renderChips();
   renderApp();
 })();
