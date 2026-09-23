@@ -14,19 +14,20 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Exercises">
-<meta name="theme-color" content="#101114">
+<meta name="theme-color" content="#f7f4ee">
 <style>
   :root{
-    --bg:#101114;
-    --bg-elev:#17191d;
-    --bg-elev-2:#1f2126;
-    --border:#2a2d33;
-    --text:#eceef0;
-    --text-dim:#9a9ea6;
-    --text-faint:#6b6f77;
-    --accent:#e8621a;
-    --accent-dim:#3a2a1c;
-    --radius:14px;
+    --bg:#f7f4ee;
+    --bg-elev:#ffffff;
+    --bg-elev-2:#f0ede7;
+    --border:#dedbd3;
+    --text:#0c1b36;
+    --text-dim:#4e596b;
+    --text-faint:#7b8290;
+    --accent:#f04b23;
+    --accent-dim:#fff0e9;
+    --radius:18px;
+    --shadow:0 12px 32px rgba(12,27,54,.08);
     --eq-bodyweight:#4a90d9;
     --eq-dumbbell:#e8621a;
     --eq-barbell:#c0392b;
@@ -36,33 +37,33 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:var(--bg);
+    background:linear-gradient(180deg,#fff 0,#f7f4ee 380px);
     color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;
     padding-bottom:60px;
   }
   a{color:inherit}
-  .wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 22px}
 
   /* Top bar */
   header.top{
     position:sticky;top:0;z-index:20;
-    background:rgba(16,17,20,0.92);
-    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,0.9);
+    backdrop-filter:blur(16px);
     border-bottom:1px solid var(--border);
-    padding:12px 0;
+    padding:14px 0 10px;
   }
   .topbar-inner{display:flex;align-items:center;gap:10px}
   .brand{
     display:flex;align-items:center;gap:8px;
-    font-weight:800;font-size:15px;letter-spacing:0.2px;
+    font-weight:900;font-size:16px;letter-spacing:-0.2px;
     white-space:nowrap;cursor:pointer;user-select:none;
   }
   .brand .mark{
-    width:26px;height:26px;border-radius:7px;background:var(--accent);
+    width:32px;height:32px;border-radius:10px;background:var(--accent);
     display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;
-    font-weight:900;color:#fff;font-size:16px;flex:none;
+    font-weight:900;color:#fff;font-size:18px;flex:none;
   }
   .search-box{
     flex:1;position:relative;
@@ -72,8 +73,8 @@
     background:var(--bg-elev-2);
     border:1px solid var(--border);
     color:var(--text);
-    border-radius:10px;
-    padding:9px 12px 9px 34px;
+    border-radius:12px;
+    padding:11px 14px 11px 38px;
     font-size:14px;
     outline:none;
   }
@@ -84,20 +85,20 @@
     color:var(--text-faint);font-size:16px;
   }
   .back-btn{
-    background:var(--bg-elev-2);border:1px solid var(--border);color:var(--text);
-    border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;
+    background:#fff;border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:11px 14px;font-size:13px;font-weight:800;
     cursor:pointer;white-space:nowrap;flex:none;
   }
   .back-btn:hover{border-color:var(--accent)}
   .lang-toggle{
-    background:var(--bg-elev-2);border:1px solid var(--border);
-    border-radius:10px;padding:9px 10px;font-size:12.5px;font-weight:700;
+    background:#fff;border:1px solid var(--border);
+    border-radius:12px;padding:10px 11px;font-size:12.5px;font-weight:800;
     cursor:pointer;white-space:nowrap;flex:none;
     display:flex;align-items:center;gap:4px;color:var(--text-faint);
   }
   .lang-toggle:hover{border-color:var(--accent)}
   .lang-toggle .lang-opt{padding:2px 3px;border-radius:5px;color:var(--text-faint)}
-  .lang-toggle .lang-opt.active{color:#fff;background:var(--accent-dim)}
+  .lang-toggle .lang-opt.active{color:var(--accent);background:var(--accent-dim)}
   .lang-toggle .lang-sep{color:var(--border)}
 
   /* chips */
@@ -108,7 +109,7 @@
   .chip-row::-webkit-scrollbar{display:none}
   .chip{
     flex:none;
-    background:var(--bg-elev-2);border:1px solid var(--border);
+    background:#fff;border:1px solid var(--border);
     color:var(--text-dim);
     padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:600;
     cursor:pointer;white-space:nowrap;
@@ -116,37 +117,38 @@
   }
   .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
   .chip.active{
-    background:var(--accent-dim);border-color:var(--accent);color:#fff;
+    background:var(--accent-dim);border-color:var(--accent);color:var(--accent);
   }
 
   /* hero */
-  .hero{padding:34px 0 8px}
-  .hero h1{font-size:clamp(24px,4vw,34px);margin:0 0 6px;letter-spacing:-0.5px}
-  .hero p{color:var(--text-dim);margin:0;font-size:14.5px;line-height:1.5;max-width:560px}
+  .hero{padding:54px 0 18px;max-width:760px}
+  .hero::before{content:"TRAIN SMARTER";display:block;color:var(--accent);font-size:12px;font-weight:900;letter-spacing:1.8px;margin-bottom:10px}
+  .hero h1{font-family:"Arial Narrow",Impact,sans-serif;font-size:clamp(36px,6vw,64px);line-height:.98;text-transform:uppercase;margin:0 0 14px;letter-spacing:-1.7px}
+  .hero p{color:var(--text-dim);margin:0;font-size:16px;line-height:1.65;max-width:680px}
 
   /* group grid */
   .group-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:12px;margin-top:22px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:16px;margin-top:24px;
   }
   .group-card{
     background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);
-    padding:16px 12px 14px;text-align:center;cursor:pointer;
+    padding:22px 16px 18px;text-align:center;cursor:pointer;box-shadow:var(--shadow);
     display:flex;flex-direction:column;align-items:center;gap:8px;
     transition:transform .12s ease, border-color .12s ease;
   }
-  .group-card:hover{border-color:var(--group-color,var(--accent));transform:translateY(-2px)}
-  .group-card svg{width:56px;height:auto}
-  .group-card .gname{font-weight:700;font-size:14px}
-  .group-card .gcount{font-size:12px;color:var(--text-faint)}
+  .group-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 16px 40px rgba(12,27,54,.13)}
+  .group-card .anatomy-photo{width:158px;height:119px;object-fit:contain;display:block;border-radius:10px;background:#fff}
+  .group-card .gname{font-family:"Arial Narrow",Impact,sans-serif;font-weight:900;font-size:19px;text-transform:uppercase;letter-spacing:-.2px}
+  .group-card .gcount{font-size:12px;color:var(--text-faint);font-weight:700}
 
   /* group detail header */
   .group-header{
-    display:flex;align-items:center;gap:16px;padding:22px 0 6px;
+    display:flex;align-items:center;gap:20px;padding:38px 0 10px;
   }
-  .group-header svg{width:64px;height:auto;flex:none}
-  .group-header h2{margin:0 0 3px;font-size:24px}
-  .group-header .sub{color:var(--text-dim);font-size:13.5px;margin:0}
+  .group-header .anatomy-photo{width:156px;height:117px;object-fit:contain;display:block;flex:none;border-radius:12px;background:#fff;border:1px solid var(--border)}
+  .group-header h2{font-family:"Arial Narrow",Impact,sans-serif;margin:0 0 4px;font-size:34px;text-transform:uppercase}
+  .group-header .sub{color:var(--text-dim);font-size:14.5px;margin:0}
 
   /* section label for search-all mode */
   .section-label{
@@ -156,24 +158,26 @@
 
   /* exercise grid */
   .ex-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    gap:14px;margin-top:16px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+    gap:22px;margin-top:20px;
   }
   .ex-card{
     background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);
-    padding:16px;display:flex;flex-direction:row;gap:12px;
+    padding:0;display:flex;flex-direction:column;gap:0;overflow:hidden;box-shadow:var(--shadow);
+    transition:transform .15s ease,box-shadow .15s ease;
   }
+  .ex-card:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(12,27,54,.13)}
   .pictogram{
-    flex:none;width:84px;height:104px;
-    background:var(--bg-elev-2);border:1px solid var(--border);border-radius:10px;
+    flex:none;width:100%;height:auto;aspect-ratio:4/5;
+    background:#fff;border:0;border-bottom:1px solid var(--border);border-radius:0;
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
   }
   .pictogram svg{width:100%;height:100%;display:block}
-  .pictogram.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .ex-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+  .pictogram.has-photo img{width:100%;height:100%;object-fit:contain;background:#fff;display:block}
+  .ex-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:11px;padding:18px 18px 20px}
   .ex-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .ex-name{font-weight:700;font-size:15.5px;line-height:1.3}
+  .ex-name{font-family:"Arial Narrow",Impact,sans-serif;font-weight:900;font-size:21px;line-height:1.08;text-transform:uppercase;letter-spacing:-.25px}
   .eq-badge{
     flex:none;font-size:10.5px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;
     padding:4px 8px;border-radius:6px;color:#fff;white-space:nowrap;
@@ -182,15 +186,10 @@
   .pill{
     font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;
   }
-  .pill.primary{background:var(--accent-dim);color:#ffb37a;border:1px solid #5a3a22}
+  .pill.primary{background:var(--accent-dim);color:#c73516;border:1px solid #ffcdbd}
   .pill.secondary{background:var(--bg-elev-2);color:var(--text-dim);border:1px solid var(--border)}
-  .cue{font-size:13px;line-height:1.5;color:var(--text-dim)}
+  .cue{font-size:13.5px;line-height:1.55;color:var(--text-dim)}
   .cue b{color:var(--text)}
-  .video-link{
-    align-self:flex-start;font-size:12px;font-weight:700;color:var(--accent);
-    text-decoration:none;display:inline-flex;align-items:center;gap:5px;
-  }
-  .video-link:hover{text-decoration:underline}
   .group-tag{
     font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;
   }
@@ -202,7 +201,16 @@
     color:var(--text-faint);font-size:12px;text-align:center;
   }
 
-  .part{fill:#3a3f47;stroke:#1c1e22;stroke-width:1.5}
+  .anatomy-base{fill:#d8dde3;stroke:#fff;stroke-width:1.15;stroke-linejoin:round}
+  .anatomy-muscle{fill:#cfd4da;stroke:#fff;stroke-width:1.15;stroke-linejoin:round}
+  .anatomy-line{fill:none;stroke:#fff;stroke-width:1;stroke-linecap:round}
+  .anatomy-label{fill:var(--text-faint);font-size:7px;font-weight:800;letter-spacing:.8px;text-anchor:middle}
+  @media(max-width:640px){
+    .wrap{padding:0 16px}.brand #brandLabel{display:none}.topbar-inner{gap:7px}
+    .hero{padding-top:38px}.group-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .group-card{padding:18px 10px 15px}.group-card .anatomy-photo{width:132px;height:99px}
+    .ex-grid{grid-template-columns:1fr;gap:18px}.group-header{padding-top:28px}
+  }
 </style>
 </head>
 <body>
@@ -231,42 +239,44 @@
   <span id="footerText">Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.</span>
 </footer>
 
+<script src="extras.js"></script>
 <script>
 /* ---------------------------------------------------------
    DATA
 --------------------------------------------------------- */
 const GROUPS = [
-  {id:'chest',     name:'Chest',        view:'front', parts:['chest'],       color:'#e8621a', blurb:'Pressing & fly movements for the pectorals.',
+  {id:'chest',     name:'Chest',        view:'front', parts:['chest'],       color:'#f04b23', blurb:'Pressing & fly movements for the pectorals.',
     nl:{name:'Borst', blurb:'Druk- en flybewegingen voor de borstspieren.'}},
-  {id:'back',      name:'Back',         view:'back',  parts:['back'],        color:'#3e8fd0', blurb:'Pulling movements for lats, mid-back & the posterior chain.',
+  {id:'back',      name:'Back',         view:'back',  parts:['back'],        color:'#f04b23', blurb:'Pulling movements for lats, mid-back & the posterior chain.',
     nl:{name:'Rug', blurb:'Trekbewegingen voor lats, middenrug & de achterketen.'}},
-  {id:'shoulders', name:'Shoulders',    view:'front', parts:['shoulders'],   color:'#d4ad2c', blurb:'Presses and raises for front, side & rear delts.',
+  {id:'shoulders', name:'Shoulders',    view:'front', parts:['shoulders'],   color:'#f04b23', blurb:'Presses and raises for front, side & rear delts.',
     nl:{name:'Schouders', blurb:'Presses en raises voor voorste, zijdelingse & achterste schouders.'}},
-  {id:'biceps',    name:'Biceps',       view:'front', parts:['biceps'],      color:'#9b59b6', blurb:'Curling variations for the front of the upper arm.',
+  {id:'biceps',    name:'Biceps',       view:'front', parts:['biceps'],      color:'#f04b23', blurb:'Curling variations for the front of the upper arm.',
     nl:{name:'Biceps', blurb:'Curl-variaties voor de voorkant van de bovenarm.'}},
-  {id:'triceps',   name:'Triceps',      view:'back',  parts:['triceps'],     color:'#1abc9c', blurb:'Extension & pressdown movements for the back of the arm.',
+  {id:'triceps',   name:'Triceps',      view:'back',  parts:['triceps'],     color:'#f04b23', blurb:'Extension & pressdown movements for the back of the arm.',
     nl:{name:'Triceps', blurb:'Extensie- en pressdown-bewegingen voor de achterkant van de arm.'}},
-  {id:'abs',       name:'Abs & Core',   view:'front', parts:['abs'],         color:'#e67e22', blurb:'Flexion, rotation & anti-extension work for the midsection.',
+  {id:'abs',       name:'Abs & Core',   view:'front', parts:['abs'],         color:'#f04b23', blurb:'Flexion, rotation & anti-extension work for the midsection.',
     nl:{name:'Buik & Core', blurb:'Flexie-, rotatie- en anti-extensiewerk voor de romp.'}},
-  {id:'legs',      name:'Legs',         view:'front', parts:['quads'],       color:'#3498db', blurb:'Quad & hamstring dominant squats, presses & lunges.',
+  {id:'legs',      name:'Legs',         view:'front', parts:['quads','hamstrings'], color:'#f04b23', blurb:'Quad & hamstring dominant squats, presses & lunges.',
     nl:{name:'Benen', blurb:'Squats, presses & lunges gedomineerd door quads & hamstrings.'}},
-  {id:'glutes',    name:'Glutes',       view:'back',  parts:['glutes'],      color:'#c0392b', blurb:'Hip-extension focused movements for the glutes.',
+  {id:'glutes',    name:'Glutes',       view:'back',  parts:['glutes'],      color:'#f04b23', blurb:'Hip-extension focused movements for the glutes.',
     nl:{name:'Bilspieren', blurb:'Op heupextensie gerichte bewegingen voor de bilspieren.'}},
-  {id:'calves',    name:'Calves',       view:'front', parts:['calves'],      color:'#27ae60', blurb:'Raises for the gastrocnemius & soleus.',
+  {id:'calves',    name:'Calves',       view:'front', parts:['calves'],      color:'#f04b23', blurb:'Raises for the gastrocnemius & soleus.',
     nl:{name:'Kuiten', blurb:'Raises voor de gastrocnemius & soleus.'}},
-  {id:'forearms',  name:'Forearms',     view:'front', parts:['forearms'],    color:'#8d99a6', blurb:'Grip & wrist work for the lower arm.',
+  {id:'forearms',  name:'Forearms',     view:'front', parts:['forearms'],    color:'#f04b23', blurb:'Grip & wrist work for the lower arm.',
     nl:{name:'Onderarmen', blurb:'Grip- en polswerk voor de onderarm.'}},
 ];
 
-// Real demonstration photos, matched by exercise name, sourced from
-// free-exercise-db (github.com/yuhonas/free-exercise-db), released
-// under the Unlicense (public domain). Falls back to the drawn
-// pictogram below when no confident match exists.
+// Exercise photos matched by exercise name. Files in images/instructional/
+// use the clean studio treatment; remaining photos are sourced from
+// free-exercise-db (github.com/yuhonas/free-exercise-db), released under the
+// Unlicense (public domain). Falls back to the drawn pictogram below when no
+// confident match exists.
 const PHOTOS = {
   'Barbell Bench Press': 'Barbell_Bench_Press_-_Medium_Grip.jpg',
   'Incline Dumbbell Press': 'Incline_Dumbbell_Press.jpg',
   'Dumbbell Flyes': 'Dumbbell_Flyes.jpg',
-  'Push-Up': 'Pushups.jpg',
+  'Push-Up': 'instructional/Pushups-targets.webp',
   'Machine Chest Press': 'Machine_Bench_Press.jpg',
   'Pec Deck (Machine Fly)': 'Butterfly.jpg',
   'Cable Crossover': 'Cable_Crossover.jpg',
@@ -275,8 +285,9 @@ const PHOTOS = {
   'Decline Bench Press': 'Decline_Barbell_Bench_Press.jpg',
   'Decline Push-Up': 'Decline_Push-Up.jpg',
   'Incline Cable Fly': 'Incline_Cable_Flye.jpg',
-  'Machine Incline Press': 'Machine_Bench_Press.jpg',
   'Pull-Up': 'Pullups.jpg',
+  'Chin-Up': 'Pullups.jpg',
+  'Chest-Supported Dumbbell Row': 'One-Arm_Dumbbell_Row.jpg',
   'Barbell Bent-Over Row': 'Bent_Over_Barbell_Row.jpg',
   'Single-Arm Dumbbell Row': 'One-Arm_Dumbbell_Row.jpg',
   'Lat Pulldown': 'Wide-Grip_Lat_Pulldown.jpg',
@@ -294,7 +305,6 @@ const PHOTOS = {
   'Front Raise': 'Front_Dumbbell_Raise.jpg',
   'Rear Delt Fly': 'Reverse_Flyes.jpg',
   'Machine Shoulder Press': 'Machine_Shoulder_Military_Press.jpg',
-  'Cable Lateral Raise': 'Cable_Seated_Lateral_Raise.jpg',
   'Face Pull': 'Face_Pull.jpg',
   'Arnold Press': 'Arnold_Dumbbell_Press.jpg',
   'Barbell Upright Row': 'Upright_Barbell_Row.jpg',
@@ -318,22 +328,23 @@ const PHOTOS = {
   'Dumbbell Triceps Kickback': 'Tricep_Dumbbell_Kickback.jpg',
   'Diamond Push-Up': 'Pushups.jpg',
   'Rope Overhead Cable Extension': 'Cable_Rope_Overhead_Triceps_Extension.jpg',
+  'Overhead Dumbbell Triceps Extension': 'Decline_Dumbbell_Triceps_Extension.jpg',
   'Single-Arm Cable Pushdown': 'Triceps_Pushdown.jpg',
   'Bench Dip': 'Bench_Dips.jpg',
-  'JM Press': 'JM_Press.jpg',
   'Crunch': 'Crunches.jpg',
   'Reverse Crunch': 'Reverse_Crunch.jpg',
-  'Plank': 'Plank.jpg',
+  'Plank': 'instructional/Plank-targets.webp',
   'Hanging Leg Raise': 'Hanging_Leg_Raise.jpg',
   'Russian Twist': 'Russian_Twist.jpg',
   'Cable Woodchopper': 'Standing_Cable_Wood_Chop.jpg',
+  'Pallof Press': 'Standing_Cable_Wood_Chop.jpg',
   'Ab Wheel Rollout': 'Ab_Roller.jpg',
   'Weighted Sit-Up': 'Weighted_Sit-Ups_-_With_Bands.jpg',
   'Mountain Climbers': 'Mountain_Climbers.jpg',
   'Side Plank': 'Side_Bridge.jpg',
   'Kneeling Cable Crunch': 'Cable_Crunch.jpg',
   'Dead Bug': 'Dead_Bug.jpg',
-  'Barbell Back Squat': 'Barbell_Squat.jpg',
+  'Barbell Back Squat': 'instructional/Barbell_Squat-targets.webp',
   'Leg Press': 'Leg_Press.jpg',
   'Dumbbell Lunge': 'Dumbbell_Lunges.jpg',
   'Leg Extension': 'Leg_Extensions.jpg',
@@ -405,7 +416,6 @@ const VIDEOS = {
   'Decline Bench Press': 'Pf1nDoqx_1A',
   'Decline Push-Up': '5QFjmotLfW4',
   'Incline Cable Fly': 'LGDCjwO-hFg',
-  'Machine Incline Press': 'VesHgJR14E8',
   'Pull-Up': 'OEXosPwzFdc',
   'Barbell Bent-Over Row': 'UL8ZcK64KxA',
   'Single-Arm Dumbbell Row': 'dFzUjzfih7k',
@@ -424,7 +434,6 @@ const VIDEOS = {
   'Lateral Raise': 'pgrWjBfaFe8',
   'Front Raise': 'H6RPefFMfjg',
   'Machine Shoulder Press': '3R14MnZbcpw',
-  'Cable Lateral Raise': 'f_OGBg2KxgY',
   'Face Pull': 'ljgqer1ZpXg',
   'Arnold Press': '6Z15_WdXmVw',
   'Barbell Upright Row': 'amCU-ziHITM',
@@ -451,7 +460,6 @@ const VIDEOS = {
   'Rope Overhead Cable Extension': 'Fwl0T1_giQ0',
   'Single-Arm Cable Pushdown': '7lYeoKRXO-0',
   'Bench Dip': '0326dy_-CzM',
-  'JM Press': 'hOCW9cE-GJg',
   'Crunch': '_M2Etme-tfE',
   'Reverse Crunch': 'yH-oSzE5_g0',
   'Plank': '6LqqeBtFn9M',
@@ -534,7 +542,6 @@ const UI = {
     resultsFor: (n,q) => `${n} result${n===1?'':'s'} for "${q}"`,
     noResults: 'No exercises match. Try a different term or equipment filter.',
     noResultsGroup: 'No exercises match this filter/search.',
-    watchVideo: 'Watch video',
     footer: 'Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.',
   },
   nl: {
@@ -548,7 +555,6 @@ const UI = {
     resultsFor: (n,q) => `${n} resulta${n===1?'at':'ten'} voor "${q}"`,
     noResults: 'Geen oefeningen gevonden. Probeer een andere zoekterm of uitrustingsfilter.',
     noResultsGroup: 'Geen oefeningen gevonden voor dit filter/deze zoekopdracht.',
-    watchVideo: 'Bekijk video',
     footer: 'Persoonlijke trainingsreferentie · geen medisch advies · gebruik altijd een gewicht en bewegingsbereik dat je met een goede vorm onder controle hebt.',
   },
 };
@@ -591,14 +597,16 @@ const EXERCISES = [
 {name:'Incline Cable Fly', group:'chest', equipment:'cable', primary:'Upper Chest', secondary:['Shoulders'],
   cue:'Set both pulleys low, keep a slight bend in your elbows, and bring your hands up and together in an arc to eye level.',
   icon:{stance:'standing', armL:'across', armR:'across', cableTo:'low', cableJoint:'R', cableBoth:true}},
-{name:'Machine Incline Press', group:'chest', equipment:'machine', primary:'Upper Chest', secondary:['Triceps'],
-  cue:'Set the seat so the handles line up with your upper chest, and press up and slightly forward without shrugging your shoulders.',
-  icon:{stance:'seated', armL:'front', armR:'front'}},
-
 // BACK
 {name:'Pull-Up', group:'back', equipment:'bodyweight', primary:'Lats', secondary:['Biceps','Rear Delts','Core'],
   cue:'Start from a dead hang, pull your chest toward the bar by driving your elbows down and back, and avoid kipping or swinging.',
   icon:{stance:'hanging', armL:'gripHigh', armR:'gripHigh'}},
+{name:'Chin-Up', group:'back', equipment:'bodyweight', primary:'Lats & Biceps', secondary:['Upper Back','Core'],
+  cue:'Use a shoulder-width underhand grip, start from a controlled hang, and pull your chest toward the bar without swinging or craning your neck.',
+  icon:{stance:'hanging', armL:'gripHigh', armR:'gripHigh'}},
+{name:'Chest-Supported Dumbbell Row', group:'back', equipment:'dumbbell', primary:'Mid-Back', secondary:['Lats','Biceps','Rear Delts'],
+  cue:'Lie chest-down on an incline bench and row both dumbbells toward your hips, keeping your torso supported and shoulders away from your ears.',
+  icon:{stance:'lyingProne', armL:'row', armR:'row', extraBench:true}},
 {name:'Barbell Bent-Over Row', group:'back', equipment:'barbell', primary:'Mid-Back & Lats', secondary:['Biceps','Rear Delts'],
   cue:'Hinge at the hips to about 45°, keep a flat back, and row the bar to your lower ribs without jerking with your lower back.',
   icon:{stance:'hinge60', armL:'row', armR:'row'}},
@@ -655,9 +663,6 @@ const EXERCISES = [
 {name:'Machine Shoulder Press', group:'shoulders', equipment:'machine', primary:'Delts', secondary:['Triceps'],
   cue:'Set the seat so handles start at shoulder height and press straight up without shrugging your shoulders toward your ears.',
   icon:{stance:'seated', armL:'overhead', armR:'overhead'}},
-{name:'Cable Lateral Raise', group:'shoulders', equipment:'cable', primary:'Side Delts', secondary:[],
-  cue:'Stand side-on to the pulley and raise the handle out to shoulder height, keeping the movement slow on the way down.',
-  icon:{stance:'standing', armL:'lateral', armR:'lateral', cableTo:'low', cableJoint:'R'}},
 {name:'Face Pull', group:'shoulders', equipment:'cable', primary:'Rear Delts', secondary:['Upper Back','Rotator Cuff'],
   cue:'Pull the rope toward your face leading with high elbows, rotating your hands back so your thumbs finish pointing behind you.',
   icon:{stance:'standing', armL:'across', armR:'across', cableTo:'mid', cableJoint:'mid'}},
@@ -737,16 +742,15 @@ const EXERCISES = [
 {name:'Rope Overhead Cable Extension', group:'triceps', equipment:'cable', primary:'Triceps (Long Head)', secondary:[],
   cue:'Face away from a low pulley, keep your elbows pointed forward near your head, and extend your forearms fully overhead.',
   icon:{stance:'standing', armL:'overheadExt', armR:'overheadExt', cableTo:'high', cableJoint:'mid'}},
+{name:'Overhead Dumbbell Triceps Extension', group:'triceps', equipment:'dumbbell', primary:'Triceps (Long Head)', secondary:[],
+  cue:'Hold one dumbbell overhead with both hands, keep your elbows pointing forward, and lower behind your head before extending without flaring your elbows.',
+  icon:{stance:'standing', armL:'overheadExt', armR:'overheadExt', gearHands:['center']}},
 {name:'Single-Arm Cable Pushdown', group:'triceps', equipment:'cable', primary:'Triceps', secondary:[],
   cue:'Keep your elbow pinned to your side and extend one arm fully down, resisting the urge to lean your torso into the movement.',
   icon:{stance:'standing', armL:'down', armR:'pushdown', cableTo:'high', cableJoint:'R'}},
 {name:'Bench Dip', group:'triceps', equipment:'bodyweight', primary:'Triceps', secondary:['Shoulders','Chest'],
   cue:'Keep your hips close to the bench and elbows pointed straight back, lowering until your upper arms are about parallel to the floor.',
   icon:{stance:'dipSupport'}},
-{name:'JM Press', group:'triceps', equipment:'barbell', primary:'Triceps', secondary:['Chest'],
-  cue:'Lower the bar toward your upper chest/chin in a hybrid path between a skull crusher and close-grip press, keeping elbows tucked.',
-  icon:{stance:'lyingBack', armL:'reachUp', armR:'reachUp', extraBench:true}},
-
 // ABS & CORE
 {name:'Crunch', group:'abs', equipment:'bodyweight', primary:'Upper Abs', secondary:[],
   cue:'Curl your shoulder blades off the floor using your abs, not your neck or hip flexors, keeping a small gap under your chin.',
@@ -766,6 +770,9 @@ const EXERCISES = [
 {name:'Cable Woodchopper', group:'abs', equipment:'cable', primary:'Obliques', secondary:['Core'],
   cue:'Rotate through your torso while keeping your hips relatively stable, pulling the cable diagonally across your body.',
   icon:{stance:'standing', armL:'across', armR:'across', cableTo:'high', cableJoint:'R'}},
+{name:'Pallof Press', group:'abs', equipment:'cable', primary:'Core', secondary:['Obliques','Glutes'],
+  cue:'Stand side-on to the cable, press the handle straight out from your chest, and resist rotation while keeping your ribs stacked over your pelvis.',
+  icon:{stance:'standing', armL:'front', armR:'front', cableTo:'mid', cableJoint:'mid'}},
 {name:'Ab Wheel Rollout', group:'abs', equipment:'bodyweight', primary:'Core', secondary:['Shoulders','Lats'],
   cue:'Keep your hips tucked and back flat as you roll out, only going as far as you can control without your lower back sagging.',
   icon:{stance:'kneeling', armL:'reachForward', armR:'reachForward'}},
@@ -967,9 +974,10 @@ const TRANSLATIONS_NL = {
   'Decline Bench Press': {primary:'Onderste borst', secondary:['Triceps','Schouders'], cue:'Laat de stang zakken tot je onderste borst met ellebogen iets meer ingetrokken dan bij een vlakke press, en druk in een rechte lijn omhoog zonder te stuiteren.'},
   'Decline Push-Up': {primary:'Bovenste borst', secondary:['Schouders','Triceps','Core'], cue:'Zet je voeten op een bank of opstapje, houd je lichaam in een rechte lijn, en laat je borst richting de vloer zakken met ellebogen op ongeveer 45°.'},
   'Incline Cable Fly': {primary:'Bovenste borst', secondary:['Schouders'], cue:'Zet beide katrollen laag, houd een lichte buiging in je ellebogen, en breng je handen in een boog omhoog en samen tot ooghoogte.'},
-  'Machine Incline Press': {primary:'Bovenste borst', secondary:['Triceps'], cue:'Zet de zitting zo dat de handvatten op je bovenste borst uitkomen, en druk omhoog en licht naar voren zonder je schouders op te trekken.'},
 
   'Pull-Up': {primary:'Lats', secondary:['Biceps','Achterste schouders','Core'], cue:'Start vanuit volledig hangen, trek je borst richting de stang door je ellebogen naar beneden en achter te sturen, en vermijd zwaaien of kippen.'},
+  'Chin-Up': {primary:'Lats & biceps', secondary:['Bovenrug','Core'], cue:'Gebruik een onderhandse greep op schouderbreedte, start vanuit gecontroleerd hangen, en trek je borst richting de stang zonder te zwaaien of je nek uit te steken.'},
+  'Chest-Supported Dumbbell Row': {primary:'Middenrug', secondary:['Lats','Biceps','Achterste schouders'], cue:'Lig met je borst op een schuine bank en roei beide dumbbells richting je heupen, terwijl je romp ondersteund blijft en je schouders laag blijven.'},
   'Barbell Bent-Over Row': {primary:'Middenrug & lats', secondary:['Biceps','Achterste schouders'], cue:'Buig ongeveer 45° in de heup, houd een vlakke rug, en roei de stang naar je onderste ribben zonder met je onderrug te trekken.'},
   'Single-Arm Dumbbell Row': {primary:'Lats', secondary:['Biceps','Achterste schouders'], cue:'Steun jezelf op een bank, houd je rug vlak, en trek de dumbbell naar je heup terwijl je elleboog dicht bij je lichaam blijft.'},
   'Lat Pulldown': {primary:'Lats', secondary:['Biceps'], cue:'Trek de stang naar je bovenste borst door je ellebogen naar beneden te sturen, met een lichte achterwaartse helling — trek niet met momentum.'},
@@ -989,7 +997,6 @@ const TRANSLATIONS_NL = {
   'Front Raise': {primary:'Voorste schouders', secondary:[], cue:'Til een of beide dumbbells gecontroleerd tot ooghoogte, en vermijd momentum vanuit je heupen.'},
   'Rear Delt Fly': {primary:'Achterste schouders', secondary:['Bovenrug'], cue:'Buig voorover met een vlakke rug en til de dumbbells naar de zijkant, en knijp bovenaan je schouderbladen samen.'},
   'Machine Shoulder Press': {primary:'Schouders', secondary:['Triceps'], cue:'Zet de zitting zo dat de handvatten op schouderhoogte starten en druk recht omhoog zonder je schouders naar je oren op te trekken.'},
-  'Cable Lateral Raise': {primary:'Zijdelingse schouders', secondary:[], cue:'Sta zijwaarts ten opzichte van de katrol en til het handvat naar schouderhoogte, en houd de beweging traag bij het zakken.'},
   'Face Pull': {primary:'Achterste schouders', secondary:['Bovenrug','Rotator cuff'], cue:'Trek het touw naar je gezicht met hoge ellebogen voorop, en draai je handen naar achter zodat je duimen uiteindelijk naar achter wijzen.'},
   'Arnold Press': {primary:'Schouders (alle koppen)', secondary:['Triceps'], cue:'Start met handpalmen naar jezelf gericht op schouderhoogte, draai je handpalmen naar voren terwijl je omhoog drukt, en keer de draai om bij het zakken.'},
   'Barbell Upright Row': {primary:'Zijdelingse schouders & trapezius', secondary:['Biceps'], cue:'Trek de stang recht omhoog dicht bij je lichaam, leid met je ellebogen, en stop rond borsthoogte om je schouders te beschermen.'},
@@ -1017,9 +1024,9 @@ const TRANSLATIONS_NL = {
   'Dumbbell Triceps Kickback': {primary:'Triceps', secondary:[], cue:'Houd je bovenarm evenwijdig aan de vloer en vast op zijn plaats, en strek alleen vanuit de elleboog.'},
   'Diamond Push-Up': {primary:'Triceps', secondary:['Borst'], cue:'Vorm een diamantvorm met je duimen en wijsvingers onder je borst, en zak met ellebogen dicht bij je lichaam.'},
   'Rope Overhead Cable Extension': {primary:'Triceps (lange kop)', secondary:[], cue:'Sta met je rug naar een lage katrol, houd je ellebogen naar voren gericht dicht bij je hoofd, en strek je onderarmen volledig boven je hoofd.'},
+  'Overhead Dumbbell Triceps Extension': {primary:'Triceps (lange kop)', secondary:[], cue:'Houd één dumbbell met beide handen boven je hoofd, richt je ellebogen naar voren, en laat het gewicht achter je hoofd zakken voordat je strekt zonder je ellebogen open te laten vallen.'},
   'Single-Arm Cable Pushdown': {primary:'Triceps', secondary:[], cue:'Houd je elleboog vastgepind aan je zij en strek één arm volledig naar beneden, en weersta de neiging om je romp mee te bewegen.'},
   'Bench Dip': {primary:'Triceps', secondary:['Schouders','Borst'], cue:'Houd je heupen dicht bij de bank en je ellebogen recht naar achter, en zak tot je bovenarmen ongeveer evenwijdig aan de vloer zijn.'},
-  'JM Press': {primary:'Triceps', secondary:['Borst'], cue:'Laat de stang zakken richting je bovenste borst/kin in een hybride pad tussen een skull crusher en een close-grip press, met ellebogen ingetrokken.'},
 
   'Crunch': {primary:'Bovenste buikspieren', secondary:[], cue:'Til je schouderbladen van de vloer met je buikspieren, niet met je nek of heupbuigers, en houd een kleine opening onder je kin.'},
   'Reverse Crunch': {primary:'Onderste buikspieren', secondary:[], cue:'Til je heupen van de vloer richting je ribbenkast met je onderste buikspieren, en houd de beweging traag en gecontroleerd.'},
@@ -1027,6 +1034,7 @@ const TRANSLATIONS_NL = {
   'Hanging Leg Raise': {primary:'Onderste buikspieren & heupbuigers', secondary:[], cue:'Vermijd zwaaien — til je benen op met je buikspieren, en rol je bekken bovenaan licht op in plaats van gewoon je benen te heffen.'},
   'Russian Twist': {primary:'Schuine buikspieren', secondary:[], cue:'Houd je borst omhoog en draai vanuit je romp, niet alleen je armen, en tik het gewicht licht neer aan elke kant.'},
   'Cable Woodchopper': {primary:'Schuine buikspieren', secondary:['Core'], cue:'Draai door je romp terwijl je je heupen relatief stabiel houdt, en trek de kabel diagonaal over je lichaam.'},
+  'Pallof Press': {primary:'Core', secondary:['Schuine buikspieren','Bilspieren'], cue:'Sta zijwaarts naast de kabel, duw het handvat recht vanuit je borst naar voren, en weersta rotatie terwijl je ribben boven je bekken blijven.'},
   'Ab Wheel Rollout': {primary:'Core', secondary:['Schouders','Lats'], cue:'Houd je heupen ingetrokken en je rug vlak terwijl je uitrolt, en ga alleen zo ver als je kunt controleren zonder dat je onderrug doorzakt.'},
   'Weighted Sit-Up': {primary:'Buikspieren', secondary:['Heupbuigers'], cue:'Houd het gewicht tegen je borst en kom soepel omhoog zonder met je nek naar voren te trekken.'},
   'Barbell Ab Rollout': {primary:'Core', secondary:['Schouders','Lats'], cue:'Rol geknield met een belaste stang naar voren, houd je heupen ingetrokken en je rug vlak, en ga alleen zo ver als je kunt controleren voor je terugrolt.'},
@@ -1091,50 +1099,45 @@ const TRANSLATIONS_NL = {
   'Finger Curls': {primary:'Onderarmen & grip', secondary:[], cue:'Laat de stang tot in je vingertoppen afrollen, en curl hem terug omhoog door je hand te sluiten, en train je grip door een klein maar intens bereik.'},
 };
 
+EXERCISES.push(...EXTRA_EXERCISES);
+
 /* ---------------------------------------------------------
    BODY DIAGRAM (simple silhouette, highlighted region)
 --------------------------------------------------------- */
 function bodySvg(view, parts, color){
-  const on = p => parts.includes(p);
-  const fill = p => on(p) ? color : null;
-  const style = p => `class="part"${on(p) ? ` style="fill:${color}"` : ''}`;
+  const muscle = p => `class="anatomy-muscle"${parts.includes(p) ? ` style="fill:${color}"` : ''}`;
+  const front = `<g transform="translate(8 2)">
+    <ellipse class="anatomy-base" cx="36" cy="13" rx="10" ry="12"/><path class="anatomy-base" d="M29 24h14l3 10H26z"/>
+    <path class="anatomy-base" d="M25 33Q36 28 47 33l7 35-8 35H26l-8-35z"/>
+    <path ${muscle('shoulders')} d="M25 34Q17 31 12 39l3 13 10-5zM47 34q8-3 13 5l-3 13-10-5z"/>
+    <path ${muscle('chest')} d="M25 37q11-7 11 10v13q-10 0-16-6zM47 37q-11-7-11 10v13q10 0 16-6z"/>
+    <path ${muscle('biceps')} d="M13 52q-5 13-2 29l8 2 5-30zM59 52q5 13 2 29l-8 2-5-30z"/>
+    <path ${muscle('forearms')} d="M11 82 7 112l8 3 5-31zM61 82l4 30-8 3-5-31z"/>
+    <path ${muscle('abs')} d="M28 61h7v12h-9zm9 0h7l2 12h-9zM26 75h9v12H25zm11 0h9l1 12H37zM25 89h10v12H27zm12 0h10l-2 12h-8z"/>
+    <path class="anatomy-base" d="M27 103h18l7 15-6 10H26l-6-10z"/>
+    <path ${muscle('quads')} d="M24 126q-3 27 1 49l9 1 1-49zM48 126q3 27-1 49l-9 1-1-49z"/>
+    <path ${muscle('calves')} d="M25 177q-3 18 1 37h7l1-37zM47 177q3 18-1 37h-7l-1-37z"/>
+    <path class="anatomy-line" d="M36 34v69M36 127v49M23 118h26"/>
+    <text class="anatomy-label" x="36" y="225">FRONT</text>
+  </g>`;
+  const back = `<g transform="translate(98 2)">
+    <ellipse class="anatomy-base" cx="36" cy="13" rx="10" ry="12"/><path class="anatomy-base" d="M29 24h14l3 10H26z"/>
+    <path class="anatomy-base" d="M25 33Q36 28 47 33l7 35-8 35H26l-8-35z"/>
+    <path ${muscle('shoulders')} d="M25 34Q17 31 12 39l3 13 10-5zM47 34q8-3 13 5l-3 13-10-5z"/>
+    <path ${muscle('triceps')} d="M13 52q-5 13-2 29l8 2 5-30zM59 52q5 13 2 29l-8 2-5-30z"/>
+    <path ${muscle('forearms')} d="M11 82 7 112l8 3 5-31zM61 82l4 30-8 3-5-31z"/>
+    <path ${muscle('back')} d="M27 35q9 9 18 0l8 21-8 42-9 5-9-5-8-42z"/>
+    <path ${muscle('glutes')} d="M26 103q10-5 10 12v13q-12 1-16-10zM46 103q-10-5-10 12v13q12 1 16-10z"/>
+    <path ${muscle('hamstrings')} d="M24 128q-3 27 1 47l9 1 1-47zM48 128q3 27-1 47l-9 1-1-47z"/>
+    <path ${muscle('calves')} d="M25 177q-3 18 1 37h7l1-37zM47 177q3 18-1 37h-7l-1-37z"/>
+    <path class="anatomy-line" d="M36 34v69M36 129v47M23 118h26M23 55l13 12 13-12"/>
+    <text class="anatomy-label" x="36" y="225">BACK</text>
+  </g>`;
+  return `<svg viewBox="0 0 180 232" role="img" aria-label="Target muscles: ${parts.join(', ')}" xmlns="http://www.w3.org/2000/svg">${front}${back}</svg>`;
+}
 
-  if(view === 'front'){
-    return `<svg viewBox="0 0 120 220" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="18" r="14" class="part"/>
-      <rect x="52" y="30" width="16" height="10" rx="3" class="part"/>
-      <ellipse cx="30" cy="46" rx="13" ry="10" ${style('shoulders')}/>
-      <ellipse cx="90" cy="46" rx="13" ry="10" ${style('shoulders')}/>
-      <rect x="12" y="44" width="17" height="36" rx="8" ${style('biceps')}/>
-      <rect x="91" y="44" width="17" height="36" rx="8" ${style('biceps')}/>
-      <rect x="10" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
-      <rect x="94" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
-      <rect x="36" y="40" width="48" height="32" rx="10" ${style('chest')}/>
-      <rect x="42" y="74" width="36" height="36" rx="8" ${style('abs')}/>
-      <rect x="40" y="110" width="40" height="18" rx="8" class="part"/>
-      <rect x="40" y="130" width="18" height="48" rx="8" ${style('quads')}/>
-      <rect x="62" y="130" width="18" height="48" rx="8" ${style('quads')}/>
-      <rect x="41" y="180" width="16" height="36" rx="7" ${style('calves')}/>
-      <rect x="63" y="180" width="16" height="36" rx="7" ${style('calves')}/>
-    </svg>`;
-  }
-  // back view
-  return `<svg viewBox="0 0 120 220" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="60" cy="18" r="14" class="part"/>
-    <rect x="52" y="30" width="16" height="10" rx="3" class="part"/>
-    <ellipse cx="30" cy="46" rx="13" ry="10" ${style('shoulders')}/>
-    <ellipse cx="90" cy="46" rx="13" ry="10" ${style('shoulders')}/>
-    <rect x="12" y="44" width="17" height="36" rx="8" ${style('triceps')}/>
-    <rect x="91" y="44" width="17" height="36" rx="8" ${style('triceps')}/>
-    <rect x="10" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
-    <rect x="94" y="82" width="16" height="36" rx="7" ${style('forearms')}/>
-    <rect x="36" y="40" width="48" height="66" rx="10" ${style('back')}/>
-    <rect x="40" y="110" width="40" height="22" rx="8" ${style('glutes')}/>
-    <rect x="40" y="134" width="18" height="44" rx="8" ${style('hamstrings')}/>
-    <rect x="62" y="134" width="18" height="44" rx="8" ${style('hamstrings')}/>
-    <rect x="41" y="180" width="16" height="36" rx="7" ${style('calves')}/>
-    <rect x="63" y="180" width="16" height="36" rx="7" ${style('calves')}/>
-  </svg>`;
+function anatomyImage(group){
+  return `<img class="anatomy-photo" src="images/anatomy/${group.id}.webp" alt="${groupName(group)} — ${group.parts.join(', ')}">`;
 }
 
 /* ---------------------------------------------------------
@@ -1374,10 +1377,13 @@ function t(key, ...args){
 function groupName(g){ return state.lang === 'nl' && g.nl ? g.nl.name : g.name; }
 function groupBlurb(g){ return state.lang === 'nl' && g.nl ? g.nl.blurb : g.blurb; }
 function eqLabel(eq){ const meta = EQUIPMENT[eq]; return state.lang === 'nl' ? meta.label_nl : meta.label; }
-function exTr(ex){ return state.lang === 'nl' ? TRANSLATIONS_NL[ex.name] : null; }
+function exTr(ex){ return state.lang === 'nl' ? (ex.nl || TRANSLATIONS_NL[ex.name]) : null; }
 function exPrimary(ex){ const tr = exTr(ex); return tr ? tr.primary : ex.primary; }
 function exSecondary(ex){ const tr = exTr(ex); return tr ? tr.secondary : ex.secondary; }
 function exCue(ex){ const tr = exTr(ex); return tr ? tr.cue : ex.cue; }
+function assetSlug(name){
+  return name.normalize('NFKD').replace(/[’']/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();
+}
 
 function eqBadge(eq){
   const meta = EQUIPMENT[eq];
@@ -1388,9 +1394,11 @@ function exerciseCard(ex, showGroupTag){
   const g = groupById(ex.group);
   const secondary = exSecondary(ex).map(s => `<span class="pill secondary">${s}</span>`).join('');
   const iconSpec = Object.assign({equipment: ex.equipment}, ex.icon || {});
-  const photo = PHOTOS[ex.name];
+  const fallbackPhoto = ex.photo || PHOTOS[ex.name];
+  const photo = `studio/${assetSlug(ex.name)}.webp`;
+  const fallback = fallbackPhoto ? ` onerror="this.onerror=null;this.src='images/${fallbackPhoto}'"` : '';
   const media = photo
-    ? `<img src="images/${photo}" alt="${ex.name} demonstration" loading="lazy">`
+    ? `<img src="images/${photo}" alt="${ex.name} demonstration" loading="lazy"${fallback}>`
     : exerciseIcon(iconSpec);
   return `<div class="ex-card">
     <div class="pictogram${photo ? ' has-photo' : ''}">${media}</div>
@@ -1407,7 +1415,6 @@ function exerciseCard(ex, showGroupTag){
         ${secondary}
       </div>
       <div class="cue">${exCue(ex)}</div>
-      ${VIDEOS[ex.name] ? `<a class="video-link" href="https://www.youtube.com/watch?v=${VIDEOS[ex.name]}" target="_blank" rel="noopener">▶ ${t('watchVideo')}</a>` : ''}
     </div>
   </div>`;
 }
@@ -1481,7 +1488,7 @@ function renderApp(){
       <div class="group-grid">
         ${GROUPS.map(g => `
           <div class="group-card" style="--group-color:${g.color}" data-group="${g.id}">
-            ${bodySvg(g.view, g.parts, g.color)}
+            ${anatomyImage(g)}
             <div class="gname">${groupName(g)}</div>
             <div class="gcount">${t('exercisesLabel', exerciseCount(g.id))}</div>
           </div>
@@ -1506,7 +1513,7 @@ function renderApp(){
   const list = EXERCISES.filter(e => e.group === g.id).filter(matchesFilters);
   app.innerHTML = `
     <div class="group-header">
-      ${bodySvg(g.view, g.parts, g.color)}
+      ${anatomyImage(g)}
       <div>
         <h2 style="color:${g.color}">${groupName(g)}</h2>
         <p class="sub">${groupBlurb(g)}</p>
