@@ -190,6 +190,24 @@
   .pill.secondary{background:var(--bg-elev-2);color:var(--text-dim);border:1px solid var(--border)}
   .cue{font-size:13.5px;line-height:1.55;color:var(--text-dim)}
   .cue b{color:var(--text)}
+  .weight-tracker{
+    margin-top:auto;padding-top:13px;border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .weight-label{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .weight-label strong{font-size:12.5px;color:var(--text)}
+  .weight-label span{font-size:10.5px;color:var(--text-faint)}
+  .weight-control{
+    display:flex;align-items:center;background:#fff;border:1px solid var(--border);
+    border-radius:10px;overflow:hidden;flex:none;transition:border-color .12s ease,box-shadow .12s ease;
+  }
+  .weight-control:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+  .weight-input{
+    width:78px;min-height:42px;border:0;outline:0;background:transparent;color:var(--text);
+    padding:9px 5px 9px 12px;font:800 16px/1 system-ui,-apple-system,sans-serif;text-align:right;
+  }
+  .weight-input::placeholder{color:#a9b2bf;font-weight:600}
+  .weight-unit{padding:0 11px 0 5px;color:var(--text-faint);font-size:12px;font-weight:800}
   .group-tag{
     font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;
   }
@@ -542,6 +560,9 @@ const UI = {
     resultsFor: (n,q) => `${n} result${n===1?'':'s'} for "${q}"`,
     noResults: 'No exercises match. Try a different term or equipment filter.',
     noResultsGroup: 'No exercises match this filter/search.',
+    maxWeight: 'Max weight',
+    maxWeightHint: 'Saved on this device',
+    maxWeightAria: name => `Maximum weight for ${name} in kilograms`,
     footer: 'Personal training reference · not medical advice · always use a weight and range of motion you can control with good form.',
   },
   nl: {
@@ -555,6 +576,9 @@ const UI = {
     resultsFor: (n,q) => `${n} resulta${n===1?'at':'ten'} voor "${q}"`,
     noResults: 'Geen oefeningen gevonden. Probeer een andere zoekterm of uitrustingsfilter.',
     noResultsGroup: 'Geen oefeningen gevonden voor dit filter/deze zoekopdracht.',
+    maxWeight: 'Maxgewicht',
+    maxWeightHint: 'Bewaard op dit toestel',
+    maxWeightAria: name => `Maximumgewicht voor ${name} in kilogram`,
     footer: 'Persoonlijke trainingsreferentie · geen medisch advies · gebruik altijd een gewicht en bewegingsbereik dat je met een goede vorm onder controle hebt.',
   },
 };
@@ -1366,6 +1390,13 @@ function exerciseIcon(spec){
 --------------------------------------------------------- */
 const savedLang = (() => { try { return localStorage.getItem('exlib-lang'); } catch(e){ return null; } })();
 const state = { groupId: null, search: '', equipment: 'all', lang: (savedLang === 'nl') ? 'nl' : 'en' };
+const WEIGHT_STORAGE_KEY = 'exlib-maxweights-v1';
+const savedWeights = (() => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(WEIGHT_STORAGE_KEY) || '{}');
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch(e){ return {}; }
+})();
 
 function groupById(id){ return GROUPS.find(g => g.id === id); }
 function exerciseCount(id){ return EXERCISES.filter(e => e.group === id).length; }
@@ -1383,6 +1414,22 @@ function exSecondary(ex){ const tr = exTr(ex); return tr ? tr.secondary : ex.sec
 function exCue(ex){ const tr = exTr(ex); return tr ? tr.cue : ex.cue; }
 function assetSlug(name){
   return name.normalize('NFKD').replace(/[’']/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();
+}
+
+function savedWeight(name){
+  const value = savedWeights[name];
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? String(value) : '';
+}
+
+function storeWeight(name, rawValue){
+  if(rawValue === ''){
+    delete savedWeights[name];
+  } else {
+    const value = Number(rawValue);
+    if(!Number.isFinite(value) || value < 0) return;
+    savedWeights[name] = value;
+  }
+  try { localStorage.setItem(WEIGHT_STORAGE_KEY, JSON.stringify(savedWeights)); } catch(e){}
 }
 
 function eqBadge(eq){
@@ -1415,6 +1462,16 @@ function exerciseCard(ex, showGroupTag){
         ${secondary}
       </div>
       <div class="cue">${exCue(ex)}</div>
+      <div class="weight-tracker">
+        <label class="weight-label" for="weight-${assetSlug(ex.name)}">
+          <strong>${t('maxWeight')}</strong>
+          <span>${t('maxWeightHint')}</span>
+        </label>
+        <div class="weight-control">
+          <input class="weight-input" id="weight-${assetSlug(ex.name)}" data-exercise="${ex.name}" type="number" min="0" step="0.5" inputmode="decimal" autocomplete="off" placeholder="—" value="${savedWeight(ex.name)}" aria-label="${t('maxWeightAria', ex.name)}">
+          <span class="weight-unit">kg</span>
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -1558,6 +1615,11 @@ window.addEventListener('hashchange', () => {
 
 document.getElementById('langToggle').addEventListener('click', () => {
   setLang(state.lang === 'en' ? 'nl' : 'en');
+});
+
+document.getElementById('app').addEventListener('input', e => {
+  if(!e.target.matches('.weight-input')) return;
+  storeWeight(e.target.dataset.exercise, e.target.value);
 });
 
 /* init */
