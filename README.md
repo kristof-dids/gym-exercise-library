@@ -2,7 +2,7 @@
 
 A personal, self-contained exercise reference for gym-floor use: pick a muscle group, see the exercises that hit it, and get a one-line form cue for each one.
 
-- 217 exercises across 10 muscle groups (Chest, Back, Shoulders, Biceps, Triceps, Abs & Core, Legs, Glutes, Calves, Forearms)
+- 231 exercises across 12 muscle groups (Chest, Lats, Trapezius, Lower Back, Shoulders, Biceps, Triceps, Abs & Core, Legs, Glutes, Calves, Forearms)
 - Mix of bodyweight, dumbbell, barbell, machine and cable movements
 - Primary + secondary muscles shown per exercise, plus a brief cue on correct form
 - Responsive light interface with large studio-style instructional images, orange movement cues and highlighted target muscles
